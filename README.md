@@ -2,6 +2,9 @@
 
 **Quanthreum** is a decentralized cryptocurrency blockchain featuring a hybrid of **Post-Quantum Cryptographic Security** and **Ethereum's Account-Based Virtual Machine**.
 
+🌐 **Live Web3 Portal & Explorer:** [https://quanthreum.vercel.app](https://quanthreum.vercel.app)  
+📦 **GitHub Repository:** [https://github.com/edge-5005/quanthreum](https://github.com/edge-5005/quanthreum)
+
 - **Blockchain Name:** Quanthreum
 - **Ticker Symbol:** **QTH**
 - **Address Format:** `0xQTH_<checksummed_hex>` (EIP-55 compliant)
