@@ -35,15 +35,20 @@ class handler(BaseHTTPRequestHandler):
         return  # Suppress default log messages
 
     def _get_path_and_query(self):
-        # Vercel passes the original requested URL in x-forwarded-uri, x-vercel-original-url, or x-matched-path
-        raw_url = (
-            self.headers.get("x-forwarded-uri")
-            or self.headers.get("x-vercel-original-url")
-            or self.headers.get("x-matched-path")
-            or self.path
-        )
-        parsed = urlparse(raw_url)
-        return parsed.path, parse_qs(parsed.query)
+        parsed = urlparse(self.path)
+        query = parse_qs(parsed.query)
+        subpath = query.get("__path__", [""])[0]
+        if subpath:
+            path = "/api/" + subpath.lstrip("/")
+        else:
+            raw_url = (
+                self.headers.get("x-forwarded-uri")
+                or self.headers.get("x-vercel-original-url")
+                or self.headers.get("x-matched-path")
+                or parsed.path
+            )
+            path = urlparse(raw_url).path
+        return path, query
 
     def _send_json(self, status_code: int, data: dict):
         response = json.dumps(data, indent=2).encode('utf-8')
