@@ -1,0 +1,30 @@
+# =====================================================================
+# Quanthreum (QTH) Full Node - Systemd Service Unit
+# Path: /etc/systemd/system/quanthreum.service
+# Commands:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable quanthreum
+#   sudo systemctl start quanthreum
+#   sudo systemctl status quanthreum
+# =====================================================================
+
+[Unit]
+Description=Quanthreum (QTH) Native Blockchain Full Node & Web Portal
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/var/www/quanthreum
+ExecStart=/usr/bin/python3 /var/www/quanthreum/quanthreum_cli.py node start --host 0.0.0.0 --port 8545 --dir /var/lib/quanthreum
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=quanthreum
+
+# Security hardening
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target

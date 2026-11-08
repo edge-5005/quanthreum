@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Blockchain runtime databases & state
+quanthreum_data/
+demo_quanthreum_data/
+/data/
+
+# Private keystores & paper backups (keep private)
+my_qth_wallet.json
+my_wallet.json
+test_*.json
+*backup*.txt
+quanthreum-48words-*.txt
+
+# Vercel & environment
+.vercel/
+.env
+.env.local
+
+# OS generated files
+.DS_Store
+Thumbs.db

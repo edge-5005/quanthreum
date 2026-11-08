@@ -1,0 +1,6 @@
+# Quanthreum (QTH) Dependencies
+# The core blockchain, QVM, Winternitz W-OTS+ cryptography, and node
+# are built purely with Python 3.10+ Standard Library (zero external C extensions required).
+
+# Optional production WSGI/Reverse Proxy tools (if desired):
+# gunicorn>=21.2.0
