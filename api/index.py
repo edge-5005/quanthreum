@@ -34,6 +34,17 @@ class handler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         return  # Suppress default log messages
 
+    def _get_path_and_query(self):
+        # Vercel passes the original requested URL in x-forwarded-uri, x-vercel-original-url, or x-matched-path
+        raw_url = (
+            self.headers.get("x-forwarded-uri")
+            or self.headers.get("x-vercel-original-url")
+            or self.headers.get("x-matched-path")
+            or self.path
+        )
+        parsed = urlparse(raw_url)
+        return parsed.path, parse_qs(parsed.query)
+
     def _send_json(self, status_code: int, data: dict):
         response = json.dumps(data, indent=2).encode('utf-8')
         self.send_response(status_code)
@@ -45,6 +56,19 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(response)
 
+    def _serve_file(self, filepath: str, content_type: str):
+        if not os.path.exists(filepath):
+            self._send_json(404, {"error": f"File not found: {os.path.basename(filepath)}"})
+            return
+        with open(filepath, "rb") as f:
+            content = f.read()
+        self.send_response(200)
+        self.send_header("Content-Type", content_type)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Content-Length", str(len(content)))
+        self.end_headers()
+        self.wfile.write(content)
+
     def do_OPTIONS(self):
         self.send_response(200)
         self.send_header("Access-Control-Allow-Origin", "*")
@@ -53,11 +77,31 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
 
     def do_GET(self):
-        parsed = urlparse(self.path)
-        path = parsed.path
-        query = parse_qs(parsed.query)
+        path, query = self._get_path_and_query()
         blockchain = get_blockchain()
 
+        # Static files fallback
+        web_dirs = [
+            os.path.join(BASE_DIR, "public"),
+            os.path.join(BASE_DIR, "web"),
+        ]
+        if path in ("/", "/index.html", "/web/index.html"):
+            for wd in web_dirs:
+                fp = os.path.join(wd, "index.html")
+                if os.path.exists(fp):
+                    return self._serve_file(fp, "text/html; charset=utf-8")
+        elif path in ("/styles.css", "/web/styles.css"):
+            for wd in web_dirs:
+                fp = os.path.join(wd, "styles.css")
+                if os.path.exists(fp):
+                    return self._serve_file(fp, "text/css; charset=utf-8")
+        elif path in ("/app.js", "/web/app.js"):
+            for wd in web_dirs:
+                fp = os.path.join(wd, "app.js")
+                if os.path.exists(fp):
+                    return self._serve_file(fp, "application/javascript; charset=utf-8")
+
+        # API Endpoints
         if path in ("/api/info", "/api/info/"):
             info = {
                 "network": "Quanthreum",
@@ -123,8 +167,8 @@ class handler(BaseHTTPRequestHandler):
             self._send_json(404, {"error": f"Unknown endpoint: {path}"})
 
     def do_POST(self):
-        parsed = urlparse(self.path)
-        path = parsed.path.rstrip("/")
+        path, _ = self._get_path_and_query()
+        path = path.rstrip("/")
         blockchain = get_blockchain()
 
         content_length = int(self.headers.get("Content-Length", 0))

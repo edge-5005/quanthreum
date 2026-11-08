@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quanthreum (QTH) | Post-Quantum Ethereum Nature Blockchain</title>
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <div class="brand-logo">
+          <!-- Quantum Ethereum Emblem -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L4 12L12 16L20 12L12 2Z" fill="url(#grad1)" opacity="0.9"/>
+            <path d="M12 17.5L4 13.5L12 22L20 13.5L12 17.5Z" fill="url(#grad2)" opacity="0.9"/>
+            <circle cx="12" cy="12" r="10" stroke="#00f2fe" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.75"/>
+            <defs>
+              <linearGradient id="grad1" x1="4" y1="2" x2="20" y2="16" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#00f2fe"/>
+                <stop offset="1" stop-color="#8b5cf6"/>
+              </linearGradient>
+              <linearGradient id="grad2" x1="4" y1="13.5" x2="20" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#8b5cf6"/>
+                <stop offset="1" stop-color="#3b82f6"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">Quanthreum</span>
+          <span class="ticker-badge">QTH</span>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#overview" class="nav-link active">Overview</a>
+        <a href="#create-wallet" class="nav-link highlight-link">Create QTH Wallet</a>
+        <a href="#wallet" class="nav-link">QTH Wallet</a>
+        <a href="#explorer" class="nav-link">Live Explorer</a>
+        <a href="#contracts" class="nav-link">QVM Contracts</a>
+        <a href="#staking" class="nav-link">Q-PoS Staking</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="node-status" id="nodeStatusBadge">
+          <span class="status-dot pulsing"></span>
+          <span id="nodeStatusText">Connecting...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content">
+    
+    <!-- Hero Section -->
+    <section id="overview" class="hero-section">
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="badge-tag">NIST Post-Quantum Cryptography</span>
+          <span class="tag-divider">•</span>
+          <span>Ethereum State & QVM</span>
+          <span class="tag-divider">•</span>
+          <span class="accent-cyan">Max Supply: 100M QTH</span>
+        </div>
+        <h1 class="hero-title">
+          The Post-Quantum Era of <br>
+          <span class="gradient-text">Decentralized Computing</span>
+        </h1>
+        <p class="hero-subtitle">
+          Quanthreum merges Ethereum's account-based World State and Virtual Machine with 
+          NIST-grade Winternitz (W-OTS+) Post-Quantum signatures. Immune to Shor's algorithm, 
+          powered by Quantum Proof-of-Stake with EIP-1559 deflationary fee burning.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#create-wallet" class="btn btn-primary">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            Create QTH Wallet
+          </a>
+          <a href="#wallet" class="btn btn-secondary">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            Open QTH Wallet
+          </a>
+          <a href="#contracts" class="btn btn-tertiary">
+            Deploy QVM Contract
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics Ribbon -->
+    <section class="stats-ribbon">
+      <div class="stat-card">
+        <div class="stat-label">Block Height</div>
+        <div class="stat-value" id="statHeight">-</div>
+        <div class="stat-sub" id="statBlocksCount">0 blocks synced</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Max Supply</div>
+        <div class="stat-value"><span class="accent-cyan">100,000,000</span> <span class="unit">QTH</span></div>
+        <div class="stat-sub">Strict hard cap</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Circulating Supply</div>
+        <div class="stat-value" id="statCirculating">-</div>
+        <div class="stat-sub">Accounts & Staked QTH</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">EIP-1559 Burned</div>
+        <div class="stat-value font-mono accent-rose" id="statBurned">-</div>
+        <div class="stat-sub">Permanently destroyed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Base Gas Fee</div>
+        <div class="stat-value font-mono" id="statBaseFee">-</div>
+        <div class="stat-sub">Dynamic Gas Pricing</div>
+      </div>
+    </section>
+
+    <!-- Dedicated Create QTH Wallet Page -->
+    <section id="create-wallet" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Security & Key Generation</span>
+        <h2 class="section-title">Create QTH Wallet</h2>
+        <p class="section-desc">Create a secure QTH Wallet protected by a password and a 48-word post-quantum seed phrase (512-bit quantum entropy).</p>
+      </div>
+
+      <div class="create-wallet-card">
+        <!-- Wizard Navigation / Mode Switcher -->
+        <div class="wizard-tabs">
+          <button class="wizard-tab-btn active" id="tabCreateNew">
+            <span class="tab-icon">✨</span> Generate New QTH Wallet
+          </button>
+          <button class="wizard-tab-btn" id="tabRestore">
+            <span class="tab-icon">🔄</span> Restore QTH Wallet
+          </button>
+        </div>
+
+        <!-- GENERATE NEW QTH WALLET FLOW -->
+        <div id="flowCreateNew" class="wizard-flow">
+
+          <!-- STEP 1: PASSWORD CREATION -->
+          <div id="stepPasswordCreation" class="wizard-step-container">
+            <div class="step-indicator-bar">
+              <span class="step-number active">Step 1</span>
+              <span class="step-title">Create Wallet Password</span>
+            </div>
+
+            <div class="wizard-step-banner">
+              <div class="step-badge">Password Security</div>
+              <p>Set a strong password to encrypt your QTH Wallet on this device. You will need this password to unlock your wallet, authorize transfers, and reveal your 48-word recovery phrase.</p>
+            </div>
+
+            <div class="password-form-grid">
+              <div class="field-group">
+                <label>Create Wallet Password (min 8 characters)</label>
+                <div class="input-with-copy">
+                  <input type="password" id="inputNewPassword" placeholder="Enter strong password...">
+                  <button class="btn-toggle-view" id="btnToggleNewPass" type="button">👁</button>
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label>Confirm Wallet Password</label>
+                <div class="input-with-copy">
+                  <input type="password" id="inputConfirmPassword" placeholder="Re-enter password...">
+                  <button class="btn-toggle-view" id="btnToggleConfirmPass" type="button">👁</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="passwordErrorMsg" class="validation-status invalid" style="margin-bottom: 1rem; display: none;"></div>
+
+            <button class="btn btn-primary btn-large btn-full" id="btnSetPasswordProceed">
+              Set Password & Proceed to Seed Phrase →
+            </button>
+          </div>
+
+          <!-- STEP 2: REVEAL SEED PHRASE (Hidden until password is set) -->
+          <div id="stepRevealPhrase" class="wizard-step-container" style="display: none;">
+            <div class="step-indicator-bar">
+              <span class="step-number done">✓ Step 1 Done</span>
+              <span class="step-number active">Step 2</span>
+              <span class="step-title">Reveal & Backup 48-Word Seed Phrase</span>
+            </div>
+
+            <div class="wizard-step-banner">
+              <div class="step-badge">Post-Quantum 512-Bit Entropy</div>
+              <p>Your 48-word recovery phrase has been generated and encrypted with your password. <strong>Never share these 48 words.</strong> Anyone with this phrase can access all QTH funds.</p>
+            </div>
+
+            <!-- Shield Before Reveal -->
+            <div id="revealShieldBox" class="reveal-shield-box">
+              <div class="shield-lock-icon">🔒</div>
+              <h3>48-Word Phrase Hidden for Privacy</h3>
+              <p>Make sure no one is looking at your screen or recording before revealing your seed words.</p>
+              <button class="btn btn-primary btn-large" id="btnRevealWordsAction">
+                👁️ Click to Reveal 48-Word Seed Phrase
+              </button>
+            </div>
+
+            <!-- Revealed Content (shown after clicking reveal) -->
+            <div id="revealedContentBox" style="display: none;">
+              <!-- New Generated Address Display Card -->
+              <div class="new-generated-addr-card">
+                <div class="nga-header">
+                  <span class="nga-tag">✨ Newly Generated QTH Wallet Address</span>
+                  <span class="nga-badge">NIST Post-Quantum W-OTS+</span>
+                </div>
+                <div class="nga-body">
+                  <div class="nga-addr font-mono" id="revealedWalletAddress">0xQTH_...</div>
+                  <button class="btn btn-sm btn-outline" id="btnCopyRevealedAddress" type="button">📋 Copy Address</button>
+                </div>
+              </div>
+
+              <div class="mnemonic-grid-header">
+                <div class="grid-title">
+                  <strong>48-Word Post-Quantum Seed Phrase</strong>
+                  <span class="badge-entropy">512-Bit Entropy</span>
+                </div>
+                <div class="grid-tools">
+                  <button class="btn btn-sm btn-outline" id="btnToggleBlur" type="button">👁️ Privacy Blur</button>
+                  <button class="btn btn-sm btn-outline" id="btnCopy48Words" type="button">📋 Copy 48 Words</button>
+                  <button class="btn btn-sm btn-outline" id="btnDownloadBackup" type="button">💾 Save Paper Backup</button>
+                  <button class="btn btn-sm btn-outline" id="btnCreateAnotherNew" type="button">✨ Generate Another</button>
+                </div>
+              </div>
+
+              <div class="mnemonic-grid" id="mnemonicGrid">
+                <!-- 48 word pills populated here -->
+              </div>
+
+              <!-- Checksum & Security Assurance -->
+              <div class="pqc-assurance-bar">
+                <div class="assurance-item">
+                  <span class="assure-dot"></span> <strong>512-Bit Quantum Entropy</strong>
+                </div>
+                <div class="assurance-item">
+                  <span class="assure-dot"></span> <strong>16-Bit Checksum Verified</strong>
+                </div>
+                <div class="assurance-item">
+                  <span class="assure-dot"></span> <strong>Password Encrypted</strong>
+                </div>
+                <div class="assurance-item">
+                  <span class="assure-dot"></span> <strong>Shor-Immune W-OTS+</strong>
+                </div>
+              </div>
+
+              <!-- Confirmation Checkbox & Activation -->
+              <div class="confirm-backup-box">
+                <label class="checkbox-container">
+                  <input type="checkbox" id="chkSavedWords">
+                  <span class="checkmark"></span>
+                  <span class="confirm-text">I have written down and stored all 48 seed words and my password safely offline. I understand that lost phrases cannot be recovered.</span>
+                </label>
+                <button class="btn btn-primary btn-large btn-full" id="btnActivateWallet" disabled>
+                  Activate & Load My QTH Wallet
+                </button>
+              </div>
+
+              <!-- Newly Created Wallet Details (shown once activated) -->
+              <div id="createdWalletSummary" class="created-summary-card" style="display: none;">
+                <div class="summary-header">
+                  <span class="summary-check">✓</span>
+                  <h4>QTH Wallet Successfully Activated</h4>
+                </div>
+                <div class="summary-fields">
+                  <div><strong>Your Quanthreum Address:</strong> <span class="font-mono accent-cyan" id="newWalletAddr"></span></div>
+                  <div><strong>Post-Quantum Public Key:</strong> <span class="font-mono truncated" id="newWalletPub"></span></div>
+                </div>
+                <div class="summary-actions">
+                  <a href="#wallet" class="btn btn-primary btn-sm">Go to QTH Wallet Dashboard & Transfers →</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RESTORE EXISTING QTH WALLET FLOW -->
+        <div id="flowRestore" class="wizard-flow" style="display: none;">
+          <div class="wizard-step-banner">
+            <div class="step-badge">Restore QTH Wallet</div>
+            <p>Paste your 48-word mnemonic phrase below and set a new password to encrypt and restore your QTH Wallet.</p>
+          </div>
+
+          <div class="field-group">
+            <label>Enter 48-Word Seed Phrase</label>
+            <textarea id="restoreInput" rows="5" placeholder="Enter all 48 words separated by spaces..." class="code-area font-mono"></textarea>
+            <div class="word-counter-row">
+              <span id="restoreWordCounter" class="word-counter">0 / 48 words</span>
+              <span id="restoreValidationStatus" class="validation-status"></span>
+            </div>
+          </div>
+
+          <div class="password-form-grid">
+            <div class="field-group">
+              <label>New Wallet Password (min 8 characters)</label>
+              <input type="password" id="restorePassword" placeholder="Create wallet password...">
+            </div>
+            <div class="field-group">
+              <label>Confirm Password</label>
+              <input type="password" id="restoreConfirmPassword" placeholder="Confirm password...">
+            </div>
+          </div>
+
+          <button class="btn btn-primary btn-large btn-full" id="btnRestoreSubmit">
+            Verify & Restore QTH Wallet
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Quantum Security Comparison -->
+    <section id="quantum-sec" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Cryptographic Foundation</span>
+        <h2 class="section-title">Why Quanthreum is Immune to Quantum Attacks</h2>
+        <p class="section-desc">Traditional ECDSA (secp256k1) used in Bitcoin and Ethereum will collapse once 2,000+ qubit quantum computers arrive. Quanthreum solves this at the protocol layer.</p>
+      </div>
+
+      <div class="comparison-grid">
+        <div class="comp-card vulnerable">
+          <div class="card-status-pill bad">Vulnerable to Shor's Algorithm</div>
+          <h3>Standard Ethereum (ECDSA)</h3>
+          <ul class="comp-list">
+            <li><strong>Entropy / Seed:</strong> Standard 128 / 256 bits (12 or 24 words)</li>
+            <li><strong>Signature Algorithm:</strong> SECP256k1 Elliptic Curve</li>
+            <li><strong>Shor's Algorithm:</strong> Breaks discrete logarithm in polynomial time $O((\log N)^3)$.</li>
+            <li><strong>Private Key Exposure:</strong> Public key on-chain allows quantum computers to instantly derive the private key.</li>
+            <li><strong>Long-Term Longevity:</strong> High risk of obsolescence within the decade.</li>
+          </ul>
+        </div>
+
+        <div class="comp-card immune">
+          <div class="card-status-pill good">512-bit Post-Quantum Secure</div>
+          <h3>Quanthreum (W-OTS+ over SHA3)</h3>
+          <ul class="comp-list">
+            <li><strong>Entropy / Seed:</strong> 512-bit Quantum Entropy (48 words)</li>
+            <li><strong>Signature Algorithm:</strong> Winternitz W-OTS+ (NIST PQC Standard)</li>
+            <li><strong>Shor's Algorithm:</strong> Completely ineffective — hash chains lack abelian group structure!</li>
+            <li><strong>Grover's Attack:</strong> SHA3-256 leaves $2^{128}$ quantum operations (physically unbreakable).</li>
+            <li><strong>Address Format:</strong> Quantum Checksummed <code>0xQTH_...</code> format.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live Blockchain Explorer -->
+    <section id="explorer" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Decentralized State</span>
+        <h2 class="section-title">Live Quanthreum Explorer</h2>
+        <p class="section-desc">Blocks verified via Post-Quantum signatures and Ethereum-style State Roots.</p>
+      </div>
+
+      <!-- Account Lookup Bar -->
+      <div class="search-bar-card">
+        <input type="text" id="lookupAddressInput" placeholder="Lookup Quanthreum Address (0xQTH_...)" class="font-mono">
+        <button class="btn btn-primary" id="btnLookupAddress">Inspect Account</button>
+      </div>
+
+      <div id="accountLookupResult" class="account-details-panel" style="display: none;">
+        <div class="details-grid">
+          <div><strong>Address:</strong> <span id="lookupResAddr" class="font-mono"></span></div>
+          <div><strong>QTH Balance:</strong> <span id="lookupResBal" class="font-mono accent-cyan font-bold"></span> QTH</div>
+          <div><strong>Account Nonce:</strong> <span id="lookupResNonce" class="font-mono"></span></div>
+          <div><strong>Account Type:</strong> <span id="lookupResType"></span></div>
+          <div><strong>Validator Stake:</strong> <span id="lookupResStake" class="font-mono"></span> QTH</div>
+        </div>
+        <div id="lookupResStorageBox" class="storage-box" style="display: none;">
+          <strong>Contract Storage State:</strong>
+          <pre id="lookupResStorage" class="font-mono"></pre>
+        </div>
+      </div>
+
+      <!-- Recent Blocks Table -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Recent Verified Blocks</span>
+          <button class="btn btn-sm btn-outline" id="btnRefreshBlocks">Refresh Feed</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Block #</th>
+                <th>Block Hash</th>
+                <th>Validator (Q-PoS)</th>
+                <th>Gas Used</th>
+                <th>Base Fee</th>
+                <th>State Root</th>
+                <th>TXs</th>
+              </tr>
+            </thead>
+            <tbody id="blocksTableBody">
+              <tr>
+                <td colspan="7" class="loading-cell">Loading blocks from Quanthreum node...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- QTH Wallet Section -->
+    <section id="wallet" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Account Management</span>
+        <h2 class="section-title">Active QTH Wallet & Transfers</h2>
+        <p class="section-desc">Manage your active account, check real-time state, and broadcast quantum transfers.</p>
+      </div>
+
+      <div class="wallet-grid">
+        <!-- Account Card -->
+        <div class="card wallet-account-card">
+          <div class="card-title-bar">
+            <h3>Active QTH Account Status</h3>
+            <a href="#create-wallet" class="btn btn-sm btn-outline">
+              Create QTH Wallet
+            </a>
+          </div>
+
+          <div class="field-group">
+            <label>Quanthreum Address (0xQTH_...)</label>
+            <div class="input-with-copy">
+              <input type="text" id="walletAddressInput" placeholder="0xQTH_..." readonly class="font-mono">
+              <button class="btn-copy" id="btnCopyAddress" title="Copy Address">📋</button>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Quantum Master Seed (Hex)</label>
+            <div class="input-with-copy">
+              <input type="password" id="walletSeedInput" placeholder="Quantum seed hex..." readonly>
+              <button class="btn-toggle-view" id="btnToggleSeed">👁</button>
+            </div>
+          </div>
+
+          <div class="balances-row">
+            <div class="balance-tile">
+              <span class="tile-label">QTH Balance</span>
+              <span class="tile-val font-mono accent-cyan" id="walletBalance">0.0000 QTH</span>
+            </div>
+            <div class="balance-tile">
+              <span class="tile-label">Account Nonce</span>
+              <span class="tile-val font-mono" id="walletNonce">0</span>
+            </div>
+            <div class="balance-tile">
+              <span class="tile-label">Security Tier</span>
+              <span class="tile-val font-mono accent-emerald">48-Word W-OTS+</span>
+            </div>
+          </div>
+
+          <button class="btn btn-outline btn-full" id="btnRefreshBalance">
+            Refresh Balance & State
+          </button>
+        </div>
+
+        <!-- Transfer Form -->
+        <div class="card wallet-ops-card">
+          <h3>Send QTH Transfer</h3>
+          <p class="tab-desc">Transfer native QTH signed with Winternitz Post-Quantum cryptography.</p>
+
+          <div class="field-group">
+            <label>Recipient Address (0xQTH_...)</label>
+            <input type="text" id="sendRecipientInput" placeholder="0xQTH_..." class="font-mono">
+          </div>
+          <div class="field-group">
+            <label>Amount (QTH)</label>
+            <input type="number" id="sendAmountInput" placeholder="10.0" step="0.1" min="0.0001">
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btnSubmitSend">
+            Sign & Broadcast QTH Transfer
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Smart Contracts & QVM Section -->
+    <section id="contracts" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Quanthreum Virtual Machine</span>
+        <h2 class="section-title">Smart Contracts & QRC-20 Tokens</h2>
+        <p class="section-desc">Deploy and interact with state-transition smart contracts on Quanthreum.</p>
+      </div>
+
+      <div class="contracts-grid">
+        <!-- Deploy Contract Card -->
+        <div class="card">
+          <h3>Deploy Smart Contract</h3>
+          <p class="tab-desc">Select a template or deploy custom contract code to the QVM.</p>
+
+          <div class="field-group">
+            <label>Contract Template</label>
+            <select id="contractTemplateSelect" class="select-box">
+              <option value="qrc20">QRC-20 Quantum Token (ERC-20 equivalent)</option>
+              <option value="vault">Quantum Staking Vault</option>
+              <option value="storage">Decentralized Key-Value Registry</option>
+            </select>
+          </div>
+
+          <div class="field-group">
+            <label>Contract Initial Code / Storage Payload (JSON)</label>
+            <textarea id="contractCodeInput" rows="7" class="code-area font-mono"></textarea>
+          </div>
+
+          <button class="btn btn-secondary btn-full" id="btnDeployContract">
+            Deploy to Quanthreum (QVM)
+          </button>
+        </div>
+
+        <!-- Interact with Contract Card -->
+        <div class="card">
+          <h3>Execute Contract Call</h3>
+          <p class="tab-desc">Call methods on any deployed contract address.</p>
+
+          <div class="field-group">
+            <label>Target Contract Address</label>
+            <input type="text" id="callContractAddrInput" placeholder="0xQTH_..." class="font-mono">
+          </div>
+
+          <div class="field-group">
+            <label>Action / Method Name</label>
+            <input type="text" id="callActionInput" placeholder="e.g. qrc20_transfer, stake, unstake" class="font-mono">
+          </div>
+
+          <div class="field-group">
+            <label>Call Parameters (JSON)</label>
+            <input type="text" id="callParamsInput" placeholder='{"to": "0xQTH_...", "amount": 50}' class="font-mono">
+          </div>
+
+          <button class="btn btn-outline btn-full" id="btnCallContract">
+            Execute Smart Contract Method
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Q-PoS Validator Portal Section -->
+    <section id="staking" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Quantum Proof of Stake</span>
+        <h2 class="section-title">Q-PoS Validator Staking & Block Engine</h2>
+        <p class="section-desc">Stake QTH to participate in network consensus and earn block rewards + gas tips.</p>
+      </div>
+
+      <div class="staking-grid">
+        <div class="card">
+          <h3>Register as a Validator</h3>
+          <p class="tab-desc">Minimum required stake: <strong>10.0 QTH</strong>. Locked in consensus state.</p>
+
+          <div class="field-group">
+            <label>Stake Amount (QTH)</label>
+            <input type="number" id="stakeAmountInput" value="32.0" step="1.0" min="10.0">
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btnSubmitStake">
+            Deposit Stake into Q-PoS Pool
+          </button>
+        </div>
+
+        <div class="card">
+          <h3>Propose & Seal Block</h3>
+          <p class="tab-desc">Execute pending mempool transactions, burn EIP-1559 base fees, and mint validator yield.</p>
+
+          <div class="field-group">
+            <label>Proposing Validator Address</label>
+            <input type="text" id="sealValidatorAddrInput" placeholder="0xQTH_..." class="font-mono">
+          </div>
+
+          <button class="btn btn-secondary btn-full" id="btnSealBlock">
+            Propose & Seal Block Now
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="brand-title">Quanthreum <span class="accent-cyan">QTH</span></span>
+        <p class="footer-desc">Post-Quantum Ethereum Nature Blockchain • Max Supply: 100,000,000 QTH.</p>
+      </div>
+      <div class="footer-right">
+        <span>Running Quanthreum Full Node on Port 8545</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
