@@ -671,6 +671,119 @@ async function sealBlockNow() {
 }
 
 // ==========================================
+// Quantum Security Services & Risk Scanner
+// ==========================================
+async function runQuantumSecurityAudit() {
+  const addrInput = document.getElementById("scanAddressInput");
+  const chainSelect = document.getElementById("scanChainSelect");
+  const resultCard = document.getElementById("scanResultCard");
+  const riskBadge = document.getElementById("scanRiskBadge");
+  const statusText = document.getElementById("scanStatusText");
+  const threatText = document.getElementById("scanThreatText");
+  const recText = document.getElementById("scanRecText");
+  const btnScan = document.getElementById("btnScanAddress");
+
+  const address = addrInput ? addrInput.value.trim() : "";
+  if (!address) {
+    return showToast("Please enter an address to scan.", "error");
+  }
+
+  btnScan.disabled = true;
+  btnScan.innerText = "Analyzing Quantum Vulnerability...";
+
+  try {
+    const chain = chainSelect ? chainSelect.value : "ethereum";
+    const res = await fetch(`${API_BASE}/api/security/scan?address=${encodeURIComponent(address)}&chain=${encodeURIComponent(chain)}`);
+    const data = await res.json();
+
+    if (res.ok) {
+      resultCard.style.display = "block";
+      if (data.risk_level === "IMMUNE") {
+        riskBadge.innerText = "0/100 (IMMUNE)";
+        riskBadge.style.background = "#10b981";
+        riskBadge.style.color = "#000";
+      } else {
+        riskBadge.innerText = `${data.risk_score}/100 (${data.risk_level})`;
+        riskBadge.style.background = "#f43f5e";
+        riskBadge.style.color = "#fff";
+      }
+      statusText.innerText = data.quantum_status;
+      threatText.innerText = data.shor_vulnerable 
+        ? `${data.quantum_threat_breakdown.algorithm} (~2,048 logical qubits to compromise)` 
+        : "Immune to Shor's algorithm (512-bit entropy)";
+      recText.innerText = data.recommendation || (data.mitigation_path ? data.mitigation_path.solution : "");
+      showToast("Quantum security audit completed!", "success");
+    } else {
+      showToast(data.error || "Audit failed", "error");
+    }
+  } catch (err) {
+    showToast("Audit network error: " + err.message, "error");
+  } finally {
+    btnScan.disabled = false;
+    btnScan.innerText = "Run Quantum Security Audit";
+  }
+}
+
+async function simulateEnterpriseCoSign() {
+  const digestInput = document.getElementById("verifyDigestInput");
+  const resultCard = document.getElementById("verifyResultCard");
+  const detailsText = document.getElementById("verifyDetailsText");
+  const btnSim = document.getElementById("btnTestQuantumSign");
+
+  const message = digestInput ? digestInput.value.trim() : "Transfer 100,000 USDT";
+  btnSim.disabled = true;
+  btnSim.innerText = "Generating Quantum Proof...";
+
+  try {
+    let seed = walletSeedInput.value.trim();
+    if (!seed) {
+      seed = "0000000000000000000000000000000000000000000000000000000000000001";
+    }
+
+    const signRes = await fetch(`${API_BASE}/api/security/sign`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ seed: seed, payload: message })
+    });
+    const signData = await signRes.json();
+
+    if (!signRes.ok || signData.status !== "success") {
+      throw new Error(signData.error || "Signing failed");
+    }
+
+    const verifyRes = await fetch(`${API_BASE}/api/security/verify`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        payload_hash: signData.payload_hash,
+        public_key: signData.public_key,
+        signature: signData.signature
+      })
+    });
+    const verifyData = await verifyRes.json();
+
+    if (verifyRes.ok && verifyData.verified) {
+      resultCard.style.display = "block";
+      detailsText.innerHTML = `
+        <div><strong>Standard:</strong> ${verifyData.security_standard}</div>
+        <div><strong>Hash Chains:</strong> 67 iterative chains over SHA3-256</div>
+        <div><strong>Quantum Co-Signer:</strong> ${signData.address}</div>
+        <div><strong>Digest:</strong> ${signData.payload_hash.substring(0, 24)}...</div>
+        <div><strong>Proof Size:</strong> ${signData.signature.length / 2} bytes (Winternitz OTS+)</div>
+      `;
+      showToast("Enterprise Quantum Proof verified!", "success");
+    } else {
+      showToast("Verification failed: " + (verifyData.error || "Invalid proof"), "error");
+    }
+  } catch (err) {
+    showToast("Simulation error: " + err.message, "error");
+  } finally {
+    btnSim.disabled = false;
+    btnSim.innerText = "Simulate Enterprise Co-Sign & Verify";
+  }
+}
+
+// ==========================================
 // Event Listeners & Initialization
 // ==========================================
 function setupEventListeners() {
@@ -791,6 +904,16 @@ function setupEventListeners() {
     fetchRecentBlocks();
     showToast("Block feed refreshed", "info");
   });
+
+  // Enterprise Quantum Security Services
+  const btnScanAddress = document.getElementById("btnScanAddress");
+  if (btnScanAddress) {
+    btnScanAddress.addEventListener("click", runQuantumSecurityAudit);
+  }
+  const btnTestQuantumSign = document.getElementById("btnTestQuantumSign");
+  if (btnTestQuantumSign) {
+    btnTestQuantumSign.addEventListener("click", simulateEnterpriseCoSign);
+  }
 }
 
 // Bootstrap

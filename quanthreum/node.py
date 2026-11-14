@@ -21,6 +21,8 @@ from .consensus import MIN_VALIDATOR_STAKE, TOTAL_MAX_SUPPLY
 from .quantum_crypto import QuantumKeyPair, validate_qth_address
 from .transaction import Transaction
 from .wallet import QuantumWallet
+from .security_service import scan_address_quantum_vulnerability, verify_enterprise_transaction
+import hashlib
 
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
@@ -143,6 +145,15 @@ class NodeRequestHandler(BaseHTTPRequestHandler):
                 self._send_json(200, found.to_dict())
             else:
                 self._send_json(404, {"error": "Block not found"})
+
+        elif path in ("/api/security/scan", "/api/security/scan/"):
+            target_addr = query.get("address", [""])[0]
+            chain = query.get("chain", ["ethereum"])[0]
+            if not target_addr:
+                self._send_json(400, {"error": "Missing 'address' parameter to scan"})
+                return
+            report = scan_address_quantum_vulnerability(target_addr, chain=chain)
+            self._send_json(200, report)
 
         else:
             self._send_json(404, {"error": f"Unknown endpoint: {path}"})
@@ -352,6 +363,40 @@ class NodeRequestHandler(BaseHTTPRequestHandler):
                     })
                 else:
                     self._send_json(400, {"status": "rejected", "error": msg})
+            except Exception as e:
+                self._send_json(500, {"error": str(e)})
+
+        # 8. Security Gateway: Quantum Signature Verification (B2B API)
+        elif path == "/api/security/verify":
+            payload_hash = data.get("payload_hash")
+            pub_key = data.get("public_key")
+            sig = data.get("signature")
+            if not payload_hash or not pub_key or not sig:
+                self._send_json(400, {"error": "Missing required fields: payload_hash, public_key, signature"})
+                return
+            result = verify_enterprise_transaction(payload_hash, pub_key, sig)
+            self._send_json(200, result)
+
+        # 9. Security Gateway: Quantum Payload Signing (B2B API Sandbox)
+        elif path == "/api/security/sign":
+            seed = data.get("seed")
+            payload = data.get("payload", "")
+            if not seed:
+                self._send_json(400, {"error": "Missing 'seed' parameter"})
+                return
+            try:
+                kp = QuantumKeyPair.from_seed_hex(seed)
+                digest = hashlib.sha256(payload.encode("utf-8")).digest()
+                signature = kp.sign(digest)
+                self._send_json(200, {
+                    "status": "success",
+                    "address": kp.address,
+                    "public_key": kp.public_key_hex,
+                    "payload_hash": digest.hex(),
+                    "signature": signature,
+                    "algorithm": "Winternitz W-OTS+ (SHA3-256)",
+                    "standard": "NIST Post-Quantum 128-bit"
+                })
             except Exception as e:
                 self._send_json(500, {"error": str(e)})
 

@@ -46,6 +46,7 @@
         <a href="#explorer" class="nav-link">Live Explorer</a>
         <a href="#contracts" class="nav-link">QVM Contracts</a>
         <a href="#staking" class="nav-link">Q-PoS Staking</a>
+        <a href="#security-services" class="nav-link highlight-link">Security Services</a>
       </nav>
 
       <div class="nav-actions">
@@ -583,6 +584,98 @@
           <button class="btn btn-secondary btn-full" id="btnSealBlock">
             Propose & Seal Block Now
           </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Enterprise Quantum Security & Risk Scanner Section -->
+    <section id="security-services" class="content-section">
+      <div class="section-header">
+        <span class="section-tag">Enterprise PQC Services</span>
+        <h2 class="section-title">Quantum Security Gateway & Vulnerability Scanner</h2>
+        <p class="section-desc">Audit legacy addresses for Shor's algorithm risks and verify Winternitz W-OTS+ signatures.</p>
+      </div>
+
+      <div class="contracts-grid">
+        <!-- Live Address Quantum Risk Scanner -->
+        <div class="card">
+          <div class="card-header-flex">
+            <h3>⚡ Quantum Vulnerability Scanner</h3>
+            <span class="badge-entropy">Shor's Risk Checker</span>
+          </div>
+          <p class="tab-desc">Check if any Ethereum, Bitcoin, or Quanthreum address has exposed public keys vulnerable to quantum factoring.</p>
+
+          <div class="field-group">
+            <label>Target Address to Audit</label>
+            <input type="text" id="scanAddressInput" placeholder="Enter 0x... (ETH) or 1... / bc1... (BTC) or 0xQTH_..." class="font-mono">
+          </div>
+
+          <div class="field-group">
+            <label>Blockchain Network</label>
+            <select id="scanChainSelect" class="font-mono" style="background:#090d18;color:#fff;padding:0.75rem;border:1px solid rgba(255,255,255,0.1);border-radius:8px;width:100%;">
+              <option value="ethereum">Ethereum (Secp256k1 - ECDSA)</option>
+              <option value="bitcoin">Bitcoin (Secp256k1 - ECDSA/Schnorr)</option>
+              <option value="quanthreum">Quanthreum (Winternitz W-OTS+)</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btnScanAddress">
+            Run Quantum Security Audit
+          </button>
+
+          <!-- Audit Results Card -->
+          <div id="scanResultCard" style="display:none;margin-top:1.25rem;background:#050811;padding:1.2rem;border-radius:10px;border:1px solid rgba(0,242,254,0.3);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+              <strong style="color:#00f2fe;">Audit Report:</strong>
+              <span id="scanRiskBadge" style="padding:0.2rem 0.6rem;border-radius:4px;font-weight:700;font-size:0.8rem;"></span>
+            </div>
+            <div style="font-size:0.85rem;line-height:1.6;color:#cbd5e1;">
+              <div><strong>Status:</strong> <span id="scanStatusText"></span></div>
+              <div><strong>Threat Level:</strong> <span id="scanThreatText"></span></div>
+              <div style="margin-top:0.5rem;padding:0.6rem;background:rgba(255,255,255,0.03);border-radius:6px;border-left:3px solid #00f2fe;">
+                <strong>Recommendation:</strong> <span id="scanRecText"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- B2B Dual-Signature Verifier & Commercial API -->
+        <div class="card">
+          <div class="card-header-flex">
+            <h3>🔐 Quantum Co-Signing Gateway (B2B)</h3>
+            <span class="badge-entropy">NIST PQC 128-bit</span>
+          </div>
+          <p class="tab-desc">Provide zero-knowledge signature verification for external Web3 platforms, crypto bridges, and institutional vaults.</p>
+
+          <div class="pricing-tiers" style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+            <div style="background:#090d18;padding:0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:0.8rem;color:#00f2fe;font-weight:700;">API GATEWAY</div>
+              <div style="font-size:1.1rem;font-weight:800;margin:0.2rem 0;">$199<span style="font-size:0.75rem;color:#94a3b8;">/mo</span></div>
+              <div style="font-size:0.75rem;color:#94a3b8;">Dual-sign API for exchanges & bridges.</div>
+            </div>
+            <div style="background:#090d18;padding:0.85rem;border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-size:0.8rem;color:#10b981;font-weight:700;">MULTISIG VAULT</div>
+              <div style="font-size:1.1rem;font-weight:800;margin:0.2rem 0;">0.25%<span style="font-size:0.75rem;color:#94a3b8;"> fee</span></div>
+              <div style="font-size:0.75rem;color:#94a3b8;">On-chain DAO treasury security.</div>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Test Message / Digest to Sign & Verify</label>
+            <input type="text" id="verifyDigestInput" value="Transfer 100,000 USDT to Institutional Cold Vault" class="font-mono">
+          </div>
+
+          <button class="btn btn-secondary btn-full" id="btnTestQuantumSign">
+            Simulate Enterprise Co-Sign & Verify
+          </button>
+
+          <div id="verifyResultCard" style="display:none;margin-top:1.25rem;background:#050811;padding:1.2rem;border-radius:10px;border:1px solid rgba(16,185,129,0.3);">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.5rem;">
+              <strong style="color:#10b981;">Verification Gateway:</strong>
+              <span style="color:#10b981;font-weight:700;font-size:0.8rem;">PASS (VERIFIED)</span>
+            </div>
+            <div style="font-size:0.8rem;font-family:monospace;color:#a7f3d0;word-break:break-all;" id="verifyDetailsText"></div>
+          </div>
         </div>
       </div>
     </section>
