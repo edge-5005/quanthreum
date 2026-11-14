@@ -1,0 +1,20 @@
+services:
+  quanthreum-node:
+    build: .
+    container_name: quanthreum_node
+    restart: always
+    ports:
+      - "8545:8545"
+    volumes:
+      - quanthreum_data:/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+volumes:
+  quanthreum_data:
+    driver: local

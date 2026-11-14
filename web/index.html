@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#080d0d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Quanthreum (QTH) | Post-Quantum Ethereum Nature Blockchain</title>
   <link rel="icon" type="image/svg+xml" href="/logo.svg">
   <link rel="stylesheet" href="/styles.css">
@@ -542,6 +545,30 @@
       </div>
     </div>
   </footer>
+
+  <!-- iOS Mobile Bottom App Navigation Bar -->
+  <nav class="ios-tab-bar" aria-label="Mobile Navigation">
+    <a href="/" class="ios-tab-item active">
+      <span class="ios-tab-icon">🏠</span>
+      <span class="ios-tab-label">Home</span>
+    </a>
+    <a href="/wallet" class="ios-tab-item">
+      <span class="ios-tab-icon">💼</span>
+      <span class="ios-tab-label">Wallet</span>
+    </a>
+    <a href="/staking" class="ios-tab-item">
+      <span class="ios-tab-icon">⚡</span>
+      <span class="ios-tab-label">Stake</span>
+    </a>
+    <a href="/explorer" class="ios-tab-item">
+      <span class="ios-tab-icon">🔍</span>
+      <span class="ios-tab-label">Explorer</span>
+    </a>
+    <a href="/security" class="ios-tab-item">
+      <span class="ios-tab-icon">🛡️</span>
+      <span class="ios-tab-label">Security</span>
+    </a>
+  </nav>
 
   <div id="toastContainer" class="toast-container"></div>
   <script src="/telemetry.js"></script>

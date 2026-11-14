@@ -268,6 +268,92 @@
             Propose & Seal Block Now
           </button>
         </div>
+
+        <!-- Validator Client Downloads: Windows & Linux -->
+        <div class="card" style="grid-column: span 2; margin-top: 1rem; border-color: rgba(79, 224, 182, 0.4); background: linear-gradient(135deg, rgba(79, 224, 182, 0.05) 0%, rgba(14, 20, 21, 0.95) 100%);">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div style="width: 40px; height: 40px; border-radius: 10px; background: rgba(79, 224, 182, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                💻
+              </div>
+              <div>
+                <h3 style="margin: 0; font-size: 1.25rem;">Validator Node Client Downloads (Windows & Linux)</h3>
+                <p class="tab-desc" style="margin: 2px 0 0;">Download pre-packaged 1-click binaries, daemons, and systemd services to run your consensus node.</p>
+              </div>
+            </div>
+            <span class="badge-entropy" style="color: #4fe0b6; border-color: rgba(79, 224, 182, 0.4);">
+              Full Node Port 8545
+            </span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;">
+            
+            <!-- Windows Client Card -->
+            <div style="background: rgba(8, 13, 13, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 6px;">
+                    🪟 Windows 11 / 10 Studio
+                  </span>
+                  <span style="font-size: 0.75rem; background: rgba(79, 224, 182, 0.12); color: #4fe0b6; padding: 2px 8px; border-radius: 4px; font-weight: 700;">1-Click GUI</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem;">
+                  Interactive desktop validator dashboard. Auto-detects Python environment, launches consensus node, and runs real-time block sealing.
+                </p>
+                <div style="background: #040711; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 8px 10px; font-family: var(--font-mono); font-size: 0.75rem; color: #5cf9d0; margin-bottom: 1rem; word-break: break-all;">
+                  powershell -ExecutionPolicy Bypass -File .\Launch-Quanthreum-Studio.ps1
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a href="/downloads/quanthreum-validator-windows.zip" download class="btn btn-primary btn-full" style="text-decoration: none; justify-content: center; gap: 0.5rem;">
+                  <span>⬇️ Download Windows Package (.zip)</span>
+                </a>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="/downloads/Launch-Quanthreum-Studio.bat" download class="btn btn-sm btn-outline" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.75rem;">
+                    Launch .BAT
+                  </a>
+                  <a href="/downloads/Launch-Quanthreum-Studio.ps1" download class="btn btn-sm btn-outline" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.75rem;">
+                    Launch .PS1
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Linux Daemon Card -->
+            <div style="background: rgba(8, 13, 13, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 1.25rem; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem;">
+                  <span style="font-weight: 800; font-size: 1.05rem; color: #fff; display: flex; align-items: center; gap: 6px;">
+                    🐧 Linux Headless Daemon
+                  </span>
+                  <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Systemd / VPS</span>
+                </div>
+                <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem;">
+                  Deploy 24/7 background validator daemon on Ubuntu/Debian/CentOS VPS with automated process supervision and EIP-1559 gas fee burning.
+                </p>
+                <div style="background: #040711; border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 6px; padding: 8px 10px; font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-bottom: 1rem; word-break: break-all;">
+                  curl -fsSL https://quanthreum.vercel.app/downloads/deploy.sh | bash
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                <a href="/downloads/deploy.sh" download class="btn btn-secondary btn-full" style="text-decoration: none; justify-content: center; gap: 0.5rem;">
+                  <span>⬇️ Download deploy.sh Script</span>
+                </a>
+                <div style="display: flex; gap: 0.5rem;">
+                  <a href="/downloads/quanthreum.service" download class="btn btn-sm btn-outline" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.75rem;">
+                    quanthreum.service
+                  </a>
+                  <a href="/downloads/docker-compose.yml" download class="btn btn-sm btn-outline" style="flex: 1; text-decoration: none; justify-content: center; font-size: 0.75rem;">
+                    docker-compose.yml
+                  </a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -287,6 +373,30 @@
       </div>
     </div>
   </footer>
+
+  <!-- iOS Mobile Bottom App Navigation Bar -->
+  <nav class="ios-tab-bar" aria-label="Mobile Navigation">
+    <a href="/" class="ios-tab-item">
+      <span class="ios-tab-icon">🏠</span>
+      <span class="ios-tab-label">Home</span>
+    </a>
+    <a href="/wallet" class="ios-tab-item">
+      <span class="ios-tab-icon">💼</span>
+      <span class="ios-tab-label">Wallet</span>
+    </a>
+    <a href="/staking" class="ios-tab-item active">
+      <span class="ios-tab-icon">⚡</span>
+      <span class="ios-tab-label">Stake</span>
+    </a>
+    <a href="/explorer" class="ios-tab-item">
+      <span class="ios-tab-icon">🔍</span>
+      <span class="ios-tab-label">Explorer</span>
+    </a>
+    <a href="/security" class="ios-tab-item">
+      <span class="ios-tab-icon">🛡️</span>
+      <span class="ios-tab-label">Security</span>
+    </a>
+  </nav>
 
   <div id="toastContainer" class="toast-container"></div>
   <script src="/telemetry.js"></script>
