@@ -169,30 +169,41 @@ async function fetchNodeInfo() {
     const data = await res.json();
 
     isNodeOnline = true;
-    nodeStatusBadge.querySelector(".status-dot").style.background = "#10b981";
-    nodeStatusText.innerText = `Quanthreum Online (Block #${data.height})`;
+    if (nodeStatusBadge) {
+      const dot = nodeStatusBadge.querySelector(".status-dot");
+      if (dot) dot.style.background = "#10b981";
+    }
+    if (nodeStatusText) {
+      nodeStatusText.innerText = `Quanthreum Online (Block #${data.height})`;
+    }
 
-    statHeight.innerText = `#${data.height}`;
-    statBlocksCount.innerText = `${data.total_blocks} blocks synced`;
-    statCirculating.innerText = `${Number(data.circulating_supply).toLocaleString(undefined, {maximumFractionDigits: 2})} QTH`;
-    statBurned.innerText = `${Number(data.burned_fees).toFixed(6)} QTH`;
-    statBaseFee.innerText = `${Number(data.base_fee).toFixed(8)} QTH`;
+    if (statHeight) statHeight.innerText = `#${data.height}`;
+    if (statBlocksCount) statBlocksCount.innerText = `${data.total_blocks} blocks synced`;
+    if (statCirculating) statCirculating.innerText = `${Number(data.circulating_supply).toLocaleString(undefined, {maximumFractionDigits: 2})} QTH`;
+    if (statBurned) statBurned.innerText = `${Number(data.burned_fees).toFixed(6)} QTH`;
+    if (statBaseFee) statBaseFee.innerText = `${Number(data.base_fee).toFixed(8)} QTH`;
 
     if (data.height !== currentHeight) {
       currentHeight = data.height;
-      fetchRecentBlocks();
-      if (walletAddressInput.value) {
+      if (blocksTableBody) fetchRecentBlocks();
+      if (walletAddressInput && walletAddressInput.value) {
         fetchAccountState(walletAddressInput.value);
       }
     }
   } catch (err) {
     isNodeOnline = false;
-    nodeStatusBadge.querySelector(".status-dot").style.background = "#f43f5e";
-    nodeStatusText.innerText = "Node Disconnected";
+    if (nodeStatusBadge) {
+      const dot = nodeStatusBadge.querySelector(".status-dot");
+      if (dot) dot.style.background = "#f43f5e";
+    }
+    if (nodeStatusText) {
+      nodeStatusText.innerText = "Node Disconnected";
+    }
   }
 }
 
 async function fetchRecentBlocks() {
+  if (!blocksTableBody) return;
   try {
     const res = await fetch(`${API_BASE}/api/blocks?limit=10`);
     if (!res.ok) return;
@@ -204,6 +215,7 @@ async function fetchRecentBlocks() {
 }
 
 function renderBlocksTable(blocks) {
+  if (!blocksTableBody) return;
   if (!blocks || blocks.length === 0) {
     blocksTableBody.innerHTML = `<tr><td colspan="7" class="loading-cell">No blocks mined yet.</td></tr>`;
     return;
@@ -465,9 +477,9 @@ async function inspectAccount(address) {
 // Active QTH Wallet Operations
 // ==========================================
 function setWallet(address, seed, mnemonic = "") {
-  walletAddressInput.value = address;
-  walletSeedInput.value = seed;
-  sealValidatorAddrInput.value = address;
+  if (walletAddressInput) walletAddressInput.value = address;
+  if (walletSeedInput) walletSeedInput.value = seed;
+  if (sealValidatorAddrInput) sealValidatorAddrInput.value = address;
   if (onboardValidatorAddrInput && !onboardValidatorAddrInput.value) {
     onboardValidatorAddrInput.value = address;
   }
@@ -500,8 +512,8 @@ async function fetchAccountState(address) {
     if (!res.ok) return;
     const data = await res.json();
 
-    walletBalance.innerText = `${data.balance.toFixed(4)} QTH`;
-    walletNonce.innerText = data.nonce;
+    if (walletBalance) walletBalance.innerText = `${data.balance.toFixed(4)} QTH`;
+    if (walletNonce) walletNonce.innerText = data.nonce;
   } catch (err) {
     console.error("Failed to fetch account balance:", err);
   }
@@ -1007,43 +1019,57 @@ function setupEventListeners() {
   if (btnRestoreSubmit) btnRestoreSubmit.addEventListener("click", restoreFrom48Words);
 
   // Active Wallet Copy & Toggle
-  btnCopyAddress.addEventListener("click", () => {
-    if (walletAddressInput.value) {
-      navigator.clipboard.writeText(walletAddressInput.value);
-      showToast("Address copied to clipboard!", "info");
-    }
-  });
+  if (btnCopyAddress) {
+    btnCopyAddress.addEventListener("click", () => {
+      if (walletAddressInput && walletAddressInput.value) {
+        navigator.clipboard.writeText(walletAddressInput.value);
+        showToast("Address copied to clipboard!", "info");
+      }
+    });
+  }
 
-  btnToggleSeed.addEventListener("click", () => {
-    walletSeedInput.type = walletSeedInput.type === "password" ? "text" : "password";
-  });
+  if (btnToggleSeed && walletSeedInput) {
+    btnToggleSeed.addEventListener("click", () => {
+      walletSeedInput.type = walletSeedInput.type === "password" ? "text" : "password";
+    });
+  }
 
-  btnRefreshBalance.addEventListener("click", () => {
-    fetchAccountState(walletAddressInput.value);
-    showToast("Account balance refreshed", "info");
-  });
+  if (btnRefreshBalance && walletAddressInput) {
+    btnRefreshBalance.addEventListener("click", () => {
+      fetchAccountState(walletAddressInput.value);
+      showToast("Account balance refreshed", "info");
+    });
+  }
 
-  walletAddressInput.addEventListener("change", () => {
-    fetchAccountState(walletAddressInput.value);
-  });
+  if (walletAddressInput) {
+    walletAddressInput.addEventListener("change", () => {
+      fetchAccountState(walletAddressInput.value);
+    });
+  }
 
   // Transfer
-  btnSubmitSend.addEventListener("click", submitSendTransaction);
+  if (btnSubmitSend) {
+    btnSubmitSend.addEventListener("click", submitSendTransaction);
+  }
 
   // Inspector
-  btnLookupAddress.addEventListener("click", () => {
-    inspectAccount(lookupAddressInput.value.trim());
-  });
+  if (btnLookupAddress && lookupAddressInput) {
+    btnLookupAddress.addEventListener("click", () => {
+      inspectAccount(lookupAddressInput.value.trim());
+    });
+  }
 
   // Template select
-  contractTemplateSelect.addEventListener("change", (e) => {
-    const tmpl = TEMPLATES[e.target.value];
-    if (tmpl) contractCodeInput.value = tmpl;
-  });
+  if (contractTemplateSelect && contractCodeInput) {
+    contractTemplateSelect.addEventListener("change", (e) => {
+      const tmpl = TEMPLATES[e.target.value];
+      if (tmpl) contractCodeInput.value = tmpl;
+    });
+  }
 
   // Contract actions
-  btnDeployContract.addEventListener("click", deploySmartContract);
-  btnCallContract.addEventListener("click", callSmartContract);
+  if (btnDeployContract) btnDeployContract.addEventListener("click", deploySmartContract);
+  if (btnCallContract) btnCallContract.addEventListener("click", callSmartContract);
 
   // Staking & Mining
   if (btnOnboardValidator) {
@@ -1052,12 +1078,16 @@ function setupEventListeners() {
   if (btnDownloadValidatorBackup) {
     btnDownloadValidatorBackup.addEventListener("click", downloadValidatorBackup);
   }
-  btnSubmitStake.addEventListener("click", submitValidatorStake);
-  btnSealBlock.addEventListener("click", sealBlockNow);
-  document.getElementById("btnRefreshBlocks").addEventListener("click", () => {
-    fetchRecentBlocks();
-    showToast("Block feed refreshed", "info");
-  });
+  if (btnSubmitStake) btnSubmitStake.addEventListener("click", submitValidatorStake);
+  if (btnSealBlock) btnSealBlock.addEventListener("click", sealBlockNow);
+
+  const btnRefreshBlocks = document.getElementById("btnRefreshBlocks");
+  if (btnRefreshBlocks) {
+    btnRefreshBlocks.addEventListener("click", () => {
+      fetchRecentBlocks();
+      showToast("Block feed refreshed", "info");
+    });
+  }
 
   // Enterprise Quantum Security Services
   const btnScanAddress = document.getElementById("btnScanAddress");
@@ -1073,7 +1103,9 @@ function setupEventListeners() {
 // Bootstrap
 window.addEventListener("DOMContentLoaded", () => {
   setupEventListeners();
-  contractCodeInput.value = TEMPLATES.qrc20;
+  if (contractCodeInput && TEMPLATES && TEMPLATES.qrc20) {
+    contractCodeInput.value = TEMPLATES.qrc20;
+  }
   loadSavedWallet();
 
   fetchNodeInfo();

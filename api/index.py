@@ -99,26 +99,49 @@ class handler(BaseHTTPRequestHandler):
             os.path.join(BASE_DIR, "public"),
             os.path.join(BASE_DIR, "web"),
         ]
-        if path in ("/", "/index.html", "/web/index.html"):
+
+        route_map = {
+            "/": "index.html",
+            "/index.html": "index.html",
+            "/create-wallet": "create-wallet.html",
+            "/create-wallet.html": "create-wallet.html",
+            "/wallet": "wallet.html",
+            "/wallet.html": "wallet.html",
+            "/explorer": "explorer.html",
+            "/explorer.html": "explorer.html",
+            "/contracts": "contracts.html",
+            "/contracts.html": "contracts.html",
+            "/staking": "staking.html",
+            "/staking.html": "staking.html",
+            "/security": "security.html",
+            "/security.html": "security.html",
+            "/security-services": "security.html",
+            "/security-services.html": "security.html",
+            "/comparison": "comparison.html",
+            "/comparison.html": "comparison.html",
+            "/whitepaper": "whitepaper.html",
+            "/whitepaper.html": "whitepaper.html",
+            "/styles.css": "styles.css",
+            "/app.js": "app.js",
+            "/create-wallet.js": "create-wallet.js",
+            "/logo.svg": "logo.svg",
+        }
+
+        clean_path = path.rstrip("/") if path != "/" else "/"
+        if clean_path in route_map:
+            target_filename = route_map[clean_path]
+            content_type = "text/html; charset=utf-8"
+            if target_filename.endswith(".css"):
+                content_type = "text/css; charset=utf-8"
+            elif target_filename.endswith(".js"):
+                content_type = "application/javascript; charset=utf-8"
+            elif target_filename.endswith(".svg"):
+                content_type = "image/svg+xml"
+
             for wd in web_dirs:
-                fp = os.path.join(wd, "index.html")
+                fp = os.path.join(wd, target_filename)
                 if os.path.exists(fp):
-                    return self._serve_file(fp, "text/html; charset=utf-8")
-        elif path in ("/create-wallet", "/create-wallet.html", "/web/create-wallet.html"):
-            for wd in web_dirs:
-                fp = os.path.join(wd, "create-wallet.html")
-                if os.path.exists(fp):
-                    return self._serve_file(fp, "text/html; charset=utf-8")
-        elif path in ("/styles.css", "/web/styles.css"):
-            for wd in web_dirs:
-                fp = os.path.join(wd, "styles.css")
-                if os.path.exists(fp):
-                    return self._serve_file(fp, "text/css; charset=utf-8")
-        elif path in ("/app.js", "/web/app.js"):
-            for wd in web_dirs:
-                fp = os.path.join(wd, "app.js")
-                if os.path.exists(fp):
-                    return self._serve_file(fp, "application/javascript; charset=utf-8")
+                    return self._serve_file(fp, content_type)
 
         # API Endpoints
         if path in ("/api/info", "/api/info/"):

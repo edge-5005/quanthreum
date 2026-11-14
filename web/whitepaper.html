@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Technical Whitepaper | Quanthreum Post-Quantum Blockchain</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <a href="/" class="brand-link" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="qth-brand-p" x1="18" y1="20" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-s" x1="50" y1="18" x2="82" y2="52" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-b" x1="22" y1="52" x2="50" y2="84" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0284c7"/>
+                  <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-q" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="50%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="url(#qth-brand-q)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="50" cy="8" r="3.5" fill="#00f5ff"/>
+              <circle cx="93" cy="93" r="4" fill="#00f5ff"/>
+              <polygon points="50,18 24,50 50,44" fill="url(#qth-brand-p)"/>
+              <polygon points="50,18 50,44 76,50" fill="url(#qth-brand-s)"/>
+              <line x1="50" y1="18" x2="50" y2="44" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+              <polygon points="50,48 24,54 50,80" fill="url(#qth-brand-b)"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="2.2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Quanthreum</span>
+            <span class="ticker-badge">QTH</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Overview</a>
+        <a href="/create-wallet.html" class="nav-link nav-cta">Create QTH Wallet</a>
+        <a href="/wallet.html" class="nav-link">QTH Wallet</a>
+        <a href="/explorer.html" class="nav-link">Live Explorer</a>
+        <a href="/contracts.html" class="nav-link">QVM Contracts</a>
+        <a href="/staking.html" class="nav-link">Q-PoS Staking</a>
+        <a href="/security.html" class="nav-link">Security Services</a>
+        <a href="/comparison.html" class="nav-link">Comparison</a>
+        <a href="/whitepaper.html" class="nav-link active">Whitepaper</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="node-status" id="nodeStatusBadge">
+          <span class="status-dot pulsing"></span>
+          <span id="nodeStatusText">Connecting...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" style="padding: 3rem 1.5rem 5rem;">
+    <!-- Whitepaper Section -->
+    <section id="whitepaper" class="content-section" style="margin-top: 0;">
+      <div class="section-header">
+        <span class="section-tag">Formal Specification</span>
+        <h1 class="section-title">Quanthreum Technical Whitepaper</h1>
+        <p class="section-desc">Version 1.0 • Post-Quantum EVM-Compatible Layer-1 Blockchain with Winternitz W-OTS+ Cryptography & Deflationary Tokenomics</p>
+      </div>
+
+      <div class="card" style="background:#090d18;border:1px solid rgba(56,189,248,0.25);border-radius:12px;padding:2.5rem;line-height:1.75;color:#cbd5e1;">
+        
+        <!-- Whitepaper TOC / Summary Badges -->
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:2rem;padding-bottom:1.25rem;border-bottom:1px solid rgba(255,255,255,0.08);">
+          <span style="background:rgba(14,165,233,0.12);color:#38bdf8;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">W-OTS+ 67 Chains</span>
+          <span style="background:rgba(16,185,129,0.12);color:#10b981;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">512-Bit CSPRNG Entropy</span>
+          <span style="background:rgba(168,85,247,0.12);color:#c084fc;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">EVM Turing-Complete</span>
+          <span style="background:rgba(245,158,11,0.12);color:#fbbf24;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">100M QTH Hard Cap</span>
+          <span style="background:rgba(245,158,11,0.12);color:#f59e0b;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">50 QTH / Day Cap</span>
+          <span style="background:rgba(14,165,233,0.12);color:#0ea5e9;padding:4px 10px;border-radius:4px;font-size:0.8rem;font-weight:700;">$300 → 1,000 QTH License</span>
+        </div>
+
+        <article class="whitepaper-body" style="font-size:0.95rem;">
+          <h2 style="color:#fff;font-size:1.6rem;margin-bottom:1rem;">Abstract</h2>
+          <p>As fault-tolerant quantum computers approach commercial realization, the cryptographic foundations of existing distributed ledgers face an existential crisis. Standard public-key cryptosystems—including RSA, ECDSA (used in Bitcoin and Ethereum), and Ed25519 (used in Solana and Cardano)—are mathematically vulnerable to polynomial-time factorization and discrete logarithm extraction via Shor's algorithm.</p>
+          <p><strong>Quanthreum (QTH)</strong> is an enterprise Layer-1 blockchain engineered to deliver absolute post-quantum security without sacrificing smart contract programmability or developer interoperability. Quanthreum replaces elliptic curve cryptography with <strong>Winternitz One-Time Signatures Plus (W-OTS+)</strong> over 67 iterative SHA3-256 hash chains, providing 512-bit master entropy and NIST-standardized post-quantum resistance. Coupled with an EVM-compatible execution engine (QVM), Quantum Proof-of-Stake (Q-PoS) consensus, an EIP-1559 deflationary burn mechanism, a 50 QTH daily validator quota ceiling, and a hard supply cap of 100,000,000 QTH, Quanthreum provides a permanent, scalable safe harbor for decentralized digital assets.</p>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">2. The Quantum Cryptographic Threat</h3>
+          <p>Modern blockchains secure transactions using Elliptic Curve Digital Signature Algorithm (ECDSA) on the <code>secp256k1</code> curve. The security of this mechanism rests entirely on the hardness of the Elliptic Curve Discrete Logarithm Problem (ECDLP): <code>Q = d · G</code>, where <code>d</code> is the private scalar and <code>Q</code> is the public curve point. On a classical computer, finding <code>d</code> given <code>Q</code> requires Pollard’s rho algorithm with exponential time complexity <code>O(√n) ≈ 2¹²⁸</code> operations.</p>
+          <p>However, Peter Shor's quantum algorithm solves the discrete logarithm problem in bounded polynomial time <code>O((log N)³)</code>. Executing Shor's algorithm on an elliptic curve requires approximately <strong>2,048 to 4,096 logical qubits</strong>. Once an address broadcasts a single transaction, the public curve point <code>Q</code> is exposed in the public mempool, enabling quantum adversaries to extract the private key and intercept assets.</p>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">3. The Quanthreum Cryptographic Framework</h3>
+          <p>Quanthreum eliminates elliptic curves entirely, building its cryptographic identity on hash-based, information-theoretically secure primitives:</p>
+          <ul style="padding-left:1.5rem;margin-bottom:1rem;">
+            <li><strong>Winternitz Parameter (w):</strong> 16 (nibble decomposition, log₂(w) = 4).</li>
+            <li><strong>Message Length (l₁):</strong> 64 nibbles (representing a 256-bit SHA3 digest).</li>
+            <li><strong>Checksum Nibbles (l₂):</strong> 3 nibbles to prevent bit-tampering.</li>
+            <li><strong>Total Hash Chains (l):</strong> 67 iterative chains over SHA3-256 and Keccak-256.</li>
+            <li><strong>Master Entropy:</strong> Derived from 512 bits of cryptographically secure pseudo-random entropy (CSPRNG), encoded into a 48-word mnemonic phrase.</li>
+          </ul>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">4. Quanthreum Virtual Machine (QVM) & Consensus</h3>
+          <p>Quanthreum maintains full state-machine compatibility with EVM architecture while substituting the cryptographic verification layer. The ledger implements <strong>Quantum Proof-of-Stake (Q-PoS)</strong> with dual-key security architecture:</p>
+          <ul style="padding-left:1.5rem;margin-bottom:1rem;">
+            <li><strong>Dual-Key Isolation:</strong> Cold Depositor Address (kept safely offline in encrypted storage or safe) holds custody of funds and receives yields, while Hot Operator Address signs block proposals.</li>
+            <li><strong>Validator Registry & Grant:</strong> $300 USD/USDT one-time registration activates validator status and credits an onboarding allocation of 1,000 QTH. Minimum active staking threshold is 10.0 QTH.</li>
+            <li><strong>Stake-Proportional Selection:</strong> Proposers are selected probabilistically based on stake weight, aligning incentives with network capital commitment.</li>
+            <li><strong>Block Target:</strong> 2-second block intervals with sub-second cryptographic finality.</li>
+          </ul>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">5. Deflationary Tokenomics & Yield Quota</h3>
+          <p>Quanthreum enforces a strict, mathematical tokenomic model with daily earning limits to eliminate hyperinflation:</p>
+          <div style="background:#050811;padding:1rem;border-radius:8px;font-family:monospace;margin-bottom:1rem;border:1px solid rgba(255,255,255,0.06);line-height:1.6;">
+            Total Maximum Supply: 100,000,000.0 QTH (Strict Hard Cap)<br>
+            Genesis Allocation:   10,000,000.0 QTH (10.0% Allocation)<br>
+            Validator Onboarding: $300 USDT Fee → 1,000.0 QTH Credited to Wallet<br>
+            Daily Validator Cap:  50.0 QTH / 24 Hours Max per Validator (Strict Ceiling)<br>
+            Base Block Reward:    0.05 QTH (Scaled proportionally by individual validator stake)<br>
+            Reference Valuation:  $15.00 USD / QTH Benchmark Target<br>
+            Gas Base Fee Burn:    100% of EIP-1559 base fee permanently burned
+          </div>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">6. Modular Protocol Security Services</h3>
+          <p>Beyond native gas settlement, Quanthreum provides enterprise cross-chain security infrastructure:</p>
+          <ul style="padding-left:1.5rem;margin-bottom:1rem;">
+            <li><strong>Quantum Vulnerability Scanner:</strong> Real-time auditing of legacy addresses for Shor's factorization vulnerabilities.</li>
+            <li><strong>B2B Dual-Signature Gateway:</strong> Enables external blockchains, DeFi protocols, and institutional custodians to co-sign settlements with zero-knowledge Winternitz proofs.</li>
+            <li><strong>On-Chain Multi-Sig Vaults:</strong> M-of-N threshold treasury management on the QVM with built-in protocol fee routing.</li>
+          </ul>
+
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #38bdf8;padding-left:0.75rem;">7. Conclusion</h3>
+          <p>Quanthreum bridges the critical gap between upcoming quantum computational capabilities and real-world Web3 usability. By integrating Winternitz W-OTS+ hash-based signatures directly with EVM smart contracts, deflationary tokenomics, and enterprise dual-signature gateways, Quanthreum provides the premier mathematical shield for the next century of decentralized digital assets.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <div class="brand-logo" style="width:32px;height:32px;">
+            <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+              <polygon points="50,18 24,50 50,44" fill="#00f5ff"/>
+              <polygon points="50,18 50,44 76,50" fill="#38bdf8"/>
+              <polygon points="50,48 24,54 50,80" fill="#0284c7"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <span class="brand-title">Quanthreum <span class="accent-cyan">QTH</span></span>
+        </div>
+        <p class="footer-desc">Post-Quantum Ethereum Nature Blockchain • Max Supply: 100,000,000 QTH.</p>
+      </div>
+      <div class="footer-right">
+        <span>Running Quanthreum Full Node on Port 8545</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

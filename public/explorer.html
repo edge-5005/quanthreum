@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Explorer | Quanthreum Post-Quantum Blockchain</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <a href="/" class="brand-link" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="qth-brand-p" x1="18" y1="20" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-s" x1="50" y1="18" x2="82" y2="52" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-b" x1="22" y1="52" x2="50" y2="84" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0284c7"/>
+                  <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-q" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="50%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="url(#qth-brand-q)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="50" cy="8" r="3.5" fill="#00f5ff"/>
+              <circle cx="93" cy="93" r="4" fill="#00f5ff"/>
+              <polygon points="50,18 24,50 50,44" fill="url(#qth-brand-p)"/>
+              <polygon points="50,18 50,44 76,50" fill="url(#qth-brand-s)"/>
+              <line x1="50" y1="18" x2="50" y2="44" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+              <polygon points="50,48 24,54 50,80" fill="url(#qth-brand-b)"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="2.2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Quanthreum</span>
+            <span class="ticker-badge">QTH</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Overview</a>
+        <a href="/create-wallet.html" class="nav-link nav-cta">Create QTH Wallet</a>
+        <a href="/wallet.html" class="nav-link">QTH Wallet</a>
+        <a href="/explorer.html" class="nav-link active">Live Explorer</a>
+        <a href="/contracts.html" class="nav-link">QVM Contracts</a>
+        <a href="/staking.html" class="nav-link">Q-PoS Staking</a>
+        <a href="/security.html" class="nav-link">Security Services</a>
+        <a href="/comparison.html" class="nav-link">Comparison</a>
+        <a href="/whitepaper.html" class="nav-link">Whitepaper</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="node-status" id="nodeStatusBadge">
+          <span class="status-dot pulsing"></span>
+          <span id="nodeStatusText">Connecting...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" style="padding: 3rem 1.5rem 5rem;">
+    <!-- Live Blockchain Explorer -->
+    <section id="explorer" class="content-section" style="margin-top: 0;">
+      <div class="section-header">
+        <span class="section-tag">Decentralized State</span>
+        <h1 class="section-title">Live Quanthreum Explorer</h1>
+        <p class="section-desc">Inspect verified blocks, Merkle state roots, EIP-1559 base fee burning, and account balances.</p>
+      </div>
+
+      <!-- Network Summary Ribbon -->
+      <section class="stats-ribbon" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+          <div class="stat-label">Block Height</div>
+          <div class="stat-value" id="statHeight">-</div>
+          <div class="stat-sub" id="statBlocksCount">0 blocks synced</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Max Supply</div>
+          <div class="stat-value"><span class="accent-cyan">100,000,000</span> <span class="unit">QTH</span></div>
+          <div class="stat-sub">Strict hard cap</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Circulating Supply</div>
+          <div class="stat-value" id="statCirculating">-</div>
+          <div class="stat-sub">Accounts & Staked QTH</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">EIP-1559 Burned</div>
+          <div class="stat-value font-mono accent-rose" id="statBurned">-</div>
+          <div class="stat-sub">Permanently destroyed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Base Gas Fee</div>
+          <div class="stat-value font-mono" id="statBaseFee">-</div>
+          <div class="stat-sub">Dynamic Gas Pricing</div>
+        </div>
+      </section>
+
+      <!-- Account Lookup Bar -->
+      <div class="search-bar-card">
+        <input type="text" id="lookupAddressInput" placeholder="Lookup Quanthreum Address (0xQTH_...)" class="font-mono">
+        <button class="btn btn-primary" id="btnLookupAddress">Inspect Account</button>
+      </div>
+
+      <div id="accountLookupResult" class="account-details-panel" style="display: none; margin-bottom: 2rem;">
+        <div class="details-grid">
+          <div><strong>Address:</strong> <span id="lookupResAddr" class="font-mono"></span></div>
+          <div><strong>QTH Balance:</strong> <span id="lookupResBal" class="font-mono accent-cyan font-bold"></span> QTH</div>
+          <div><strong>Account Nonce:</strong> <span id="lookupResNonce" class="font-mono"></span></div>
+          <div><strong>Account Type:</strong> <span id="lookupResType"></span></div>
+          <div><strong>Validator Stake:</strong> <span id="lookupResStake" class="font-mono"></span> QTH</div>
+        </div>
+        <div id="lookupResStorageBox" class="storage-box" style="display: none; margin-top: 1rem;">
+          <strong>Contract Storage State:</strong>
+          <pre id="lookupResStorage" class="font-mono" style="background:#050811;padding:1rem;border-radius:6px;margin-top:0.5rem;overflow-x:auto;"></pre>
+        </div>
+      </div>
+
+      <!-- Recent Blocks Table -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Recent Verified Blocks</span>
+          <button class="btn btn-sm btn-outline" id="btnRefreshBlocks">Refresh Feed</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Block #</th>
+                <th>Block Hash</th>
+                <th>Validator (Q-PoS)</th>
+                <th>Gas Used</th>
+                <th>Base Fee</th>
+                <th>State Root</th>
+                <th>TXs</th>
+              </tr>
+            </thead>
+            <tbody id="blocksTableBody">
+              <tr>
+                <td colspan="7" class="loading-cell">Loading blocks from Quanthreum node...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <div class="brand-logo" style="width:32px;height:32px;">
+            <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+              <polygon points="50,18 24,50 50,44" fill="#00f5ff"/>
+              <polygon points="50,18 50,44 76,50" fill="#38bdf8"/>
+              <polygon points="50,48 24,54 50,80" fill="#0284c7"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <span class="brand-title">Quanthreum <span class="accent-cyan">QTH</span></span>
+        </div>
+        <p class="footer-desc">Post-Quantum Ethereum Nature Blockchain • Max Supply: 100,000,000 QTH.</p>
+      </div>
+      <div class="footer-right">
+        <span>Running Quanthreum Full Node on Port 8545</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

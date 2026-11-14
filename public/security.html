@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quantum Security Services | Quanthreum Post-Quantum Blockchain</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <a href="/" class="brand-link" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="qth-brand-p" x1="18" y1="20" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-s" x1="50" y1="18" x2="82" y2="52" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-b" x1="22" y1="52" x2="50" y2="84" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0284c7"/>
+                  <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="qth-brand-q" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="50%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="url(#qth-brand-q)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="50" cy="8" r="3.5" fill="#00f5ff"/>
+              <circle cx="93" cy="93" r="4" fill="#00f5ff"/>
+              <polygon points="50,18 24,50 50,44" fill="url(#qth-brand-p)"/>
+              <polygon points="50,18 50,44 76,50" fill="url(#qth-brand-s)"/>
+              <line x1="50" y1="18" x2="50" y2="44" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+              <polygon points="50,48 24,54 50,80" fill="url(#qth-brand-b)"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="2.2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Quanthreum</span>
+            <span class="ticker-badge">QTH</span>
+          </div>
+        </a>
+      </div>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Overview</a>
+        <a href="/create-wallet.html" class="nav-link nav-cta">Create QTH Wallet</a>
+        <a href="/wallet.html" class="nav-link">QTH Wallet</a>
+        <a href="/explorer.html" class="nav-link">Live Explorer</a>
+        <a href="/contracts.html" class="nav-link">QVM Contracts</a>
+        <a href="/staking.html" class="nav-link">Q-PoS Staking</a>
+        <a href="/security.html" class="nav-link active">Security Services</a>
+        <a href="/comparison.html" class="nav-link">Comparison</a>
+        <a href="/whitepaper.html" class="nav-link">Whitepaper</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="node-status" id="nodeStatusBadge">
+          <span class="status-dot pulsing"></span>
+          <span id="nodeStatusText">Connecting...</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-content" style="padding: 3rem 1.5rem 5rem;">
+    <!-- Enterprise Quantum Security & Risk Scanner Section -->
+    <section id="security-services" class="content-section" style="margin-top: 0;">
+      <div class="section-header">
+        <span class="section-tag">Enterprise PQC Services</span>
+        <h1 class="section-title">Quantum Security Gateway & Vulnerability Scanner</h1>
+        <p class="section-desc">Audit legacy addresses for Shor's algorithm risks and verify Winternitz W-OTS+ signatures.</p>
+      </div>
+
+      <div class="contracts-grid">
+        <!-- Live Address Quantum Risk Scanner -->
+        <div class="card">
+          <div class="card-header-flex">
+            <h3>⚡ Quantum Vulnerability Scanner</h3>
+            <span class="badge-entropy">Shor's Risk Checker</span>
+          </div>
+          <p class="tab-desc">Check if any Ethereum, Bitcoin, or Quanthreum address has exposed public keys vulnerable to quantum factoring.</p>
+
+          <div class="field-group">
+            <label>Target Address to Audit</label>
+            <input type="text" id="scanAddressInput" placeholder="Enter 0x... (ETH) or 1... / bc1... (BTC) or 0xQTH_..." class="font-mono">
+          </div>
+
+          <div class="field-group">
+            <label>Blockchain Network</label>
+            <select id="scanChainSelect" class="font-mono" style="background:#090d18;color:#fff;padding:0.75rem;border:1px solid rgba(255,255,255,0.1);border-radius:8px;width:100%;">
+              <option value="ethereum">Ethereum (Secp256k1 - ECDSA)</option>
+              <option value="bitcoin">Bitcoin (Secp256k1 - ECDSA/Schnorr)</option>
+              <option value="quanthreum">Quanthreum (Winternitz W-OTS+)</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary btn-full" id="btnScanAddress">
+            Run Quantum Vulnerability Audit
+          </button>
+
+          <div id="scanReportBox" class="account-details-panel" style="display: none; margin-top: 1.25rem;">
+            <div class="card-header-flex">
+              <h4>Audit Results</h4>
+              <span id="scanRiskBadge" class="badge-entropy"></span>
+            </div>
+            <div class="details-grid" style="margin-top: 0.75rem;">
+              <div><strong>Target:</strong> <span id="scanResTarget" class="font-mono"></span></div>
+              <div><strong>Vulnerability Score:</strong> <span id="scanResScore" class="font-mono font-bold"></span> / 100</div>
+              <div style="grid-column: span 2;"><strong>Status:</strong> <span id="scanResStatus"></span></div>
+              <div style="grid-column: span 2;"><strong>Threat Vector:</strong> <span id="scanResThreat"></span></div>
+              <div style="grid-column: span 2;"><strong>Recommendation:</strong> <span id="scanResRec" style="color: #cbd5e1;"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- B2B Co-Signing & Verification Sandbox -->
+        <div class="card">
+          <div class="card-header-flex">
+            <h3>🔐 Quantum Co-Signing Gateway</h3>
+            <span class="badge-entropy">B2B Integration</span>
+          </div>
+          <p class="tab-desc">Simulate institutional transactions requiring zero-knowledge Post-Quantum Winternitz co-signatures.</p>
+
+          <div class="field-group">
+            <label>Transaction Payload to Secure</label>
+            <input type="text" id="testSignPayload" value='{"action":"TRANSFER","amount":100000,"token":"USDT","to":"0x742d35Cc6634C0532925a3b844Bc454e4438f44e"}' class="font-mono">
+          </div>
+
+          <div class="field-group">
+            <label>Signer Quantum Master Seed (Hex)</label>
+            <input type="password" id="testSignSeed" placeholder="Master seed hex from your QTH Wallet..." class="font-mono">
+          </div>
+
+          <button class="btn btn-secondary btn-full" id="btnTestQuantumSign">
+            Simulate Enterprise Co-Sign & Verify
+          </button>
+
+          <div id="coSignResultBox" class="account-details-panel" style="display: none; margin-top: 1.25rem;">
+            <h4 style="color: #10b981;">✓ Verification Proof: VALID</h4>
+            <div class="details-grid" style="margin-top: 0.5rem;">
+              <div><strong>Algorithm:</strong> Winternitz W-OTS+ (67 Chains)</div>
+              <div><strong>Security:</strong> NIST PQC Level 128 (Shor Immune)</div>
+              <div style="grid-column: span 2;"><strong>Digest:</strong> <span id="coSignDigest" class="font-mono"></span></div>
+              <div style="grid-column: span 2;"><strong>Quantum Signature:</strong> <span id="coSignSignature" class="font-mono truncated"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+          <div class="brand-logo" style="width:32px;height:32px;">
+            <svg width="20" height="20" viewBox="0 0 100 100" fill="none">
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="#38bdf8" stroke-width="6" stroke-linecap="round"/>
+              <polygon points="50,18 24,50 50,44" fill="#00f5ff"/>
+              <polygon points="50,18 50,44 76,50" fill="#38bdf8"/>
+              <polygon points="50,48 24,54 50,80" fill="#0284c7"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <span class="brand-title">Quanthreum <span class="accent-cyan">QTH</span></span>
+        </div>
+        <p class="footer-desc">Post-Quantum Ethereum Nature Blockchain • Max Supply: 100,000,000 QTH.</p>
+      </div>
+      <div class="footer-right">
+        <span>Running Quanthreum Full Node on Port 8545</span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/app.js"></script>
+</body>
+</html>
