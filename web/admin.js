@@ -34,7 +34,6 @@
   const authGateOverlay = document.getElementById('authGateOverlay');
   const adminPasskeyInput = document.getElementById('adminPasskeyInput');
   const btnUnlockConsole = document.getElementById('btnUnlockConsole');
-  const btnQuickAuth = document.getElementById('btnQuickAuth');
   const btnLockConsole = document.getElementById('btnLockConsole');
   
   const penetrationAlertBanner = document.getElementById('penetrationAlertBanner');
@@ -431,14 +430,6 @@
 
   // Event Listeners
   if (btnUnlockConsole) btnUnlockConsole.addEventListener('click', unlockConsole);
-  if (btnQuickAuth) {
-    btnQuickAuth.addEventListener('click', () => {
-      if (adminPasskeyInput) {
-        adminPasskeyInput.value = MASTER_PASSKEY;
-        unlockConsole();
-      }
-    });
-  }
   if (btnLockConsole) btnLockConsole.addEventListener('click', lockConsole);
   if (btnSimulateProbe) btnSimulateProbe.addEventListener('click', triggerSimulatedProbe);
   if (btnResetAlerts) btnResetAlerts.addEventListener('click', resetAlerts);

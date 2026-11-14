@@ -58,7 +58,10 @@
         </a>
         <div class="node-status" id="nodeStatusBadge">
           <span class="status-dot pulsing"></span>
-          <span id="nodeStatusText">Connecting...</span>
+          <span id="nodeStatusText">
+            <span class="node-status-full">Quanthreum Online (Block #0)</span>
+            <span class="node-status-mobile">#0</span>
+          </span>
         </div>
       </div>
     </div>
@@ -145,47 +148,6 @@
         <!-- Center Column: Smartphone Device Showcase with Floating Satellite Security Badges -->
         <div class="phone-mockup-wrapper">
 
-          <!-- 4 Floating Satellite Security Cards -->
-          <!-- Top Left: NIST W-OTS+ -->
-          <div class="satellite-card satellite-card-top-left">
-            <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
-              <span style="font-size:0.9rem;">⚛️</span>
-              <span class="satellite-title" style="margin:0;">NIST W-OTS+</span>
-            </div>
-            <div class="satellite-value">Immunity 100%</div>
-            <div style="font-size:0.7rem;color:#27e38c;font-weight:700;margin-top:2px;">Immune to Shor's Algo</div>
-          </div>
-
-          <!-- Bottom Left: Preimage Hardness -->
-          <div class="satellite-card satellite-card-bottom-left">
-            <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
-              <span style="font-size:0.9rem;">🛡️</span>
-              <span class="satellite-title" style="margin:0;">Preimage Hardness</span>
-            </div>
-            <div class="satellite-value">Keccak-256 / SHA3</div>
-            <div style="font-size:0.7rem;color:#4fe0b6;font-weight:700;margin-top:2px;">Quantum Cryptographic Shield</div>
-          </div>
-
-          <!-- Top Right: Dual-Key Vault -->
-          <div class="satellite-card satellite-card-top-right">
-            <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
-              <span style="font-size:0.9rem;">🔐</span>
-              <span class="satellite-title" style="margin:0;">Dual-Key Vault</span>
-            </div>
-            <div class="satellite-value">Cold Isolation</div>
-            <div style="font-size:0.7rem;color:#5cf9d0;font-weight:700;margin-top:2px;">Operator ≠ Cold Vault</div>
-          </div>
-
-          <!-- Bottom Right: EIP-1559 Shield -->
-          <div class="satellite-card satellite-card-bottom-right">
-            <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
-              <span style="font-size:0.9rem;">⚡</span>
-              <span class="satellite-title" style="margin:0;">EIP-1559 Shield</span>
-            </div>
-            <div class="satellite-value">Real-Time Fee Burn</div>
-            <div style="font-size:0.7rem;color:#ff5b5b;font-weight:700;margin-top:2px;">Anti-Sybil & Anti-DDoS</div>
-          </div>
-
           <!-- Smartphone Hardware Mockup -->
           <div class="phone-mockup">
             <div class="phone-screen">
@@ -238,6 +200,49 @@
                 <div class="phone-dock-item">⚙️</div>
               </div>
 
+            </div>
+          </div>
+
+          <!-- 4 Floating Satellite Security Cards -->
+          <div class="satellite-cards-cluster">
+            <!-- Top Left: NIST W-OTS+ -->
+            <div class="satellite-card satellite-card-top-left">
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
+                <span style="font-size:0.9rem;">⚛️</span>
+                <span class="satellite-title" style="margin:0;">NIST W-OTS+</span>
+              </div>
+              <div class="satellite-value">Immunity 100%</div>
+              <div style="font-size:0.7rem;color:#27e38c;font-weight:700;margin-top:2px;">Immune to Shor's Algo</div>
+            </div>
+
+            <!-- Bottom Left: Preimage Hardness -->
+            <div class="satellite-card satellite-card-bottom-left">
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
+                <span style="font-size:0.9rem;">🛡️</span>
+                <span class="satellite-title" style="margin:0;">Preimage Hardness</span>
+              </div>
+              <div class="satellite-value">Keccak-256 / SHA3</div>
+              <div style="font-size:0.7rem;color:#4fe0b6;font-weight:700;margin-top:2px;">Quantum Cryptographic Shield</div>
+            </div>
+
+            <!-- Top Right: Dual-Key Vault -->
+            <div class="satellite-card satellite-card-top-right">
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
+                <span style="font-size:0.9rem;">🔐</span>
+                <span class="satellite-title" style="margin:0;">Dual-Key Vault</span>
+              </div>
+              <div class="satellite-value">Cold Isolation</div>
+              <div style="font-size:0.7rem;color:#5cf9d0;font-weight:700;margin-top:2px;">Operator ≠ Cold Vault</div>
+            </div>
+
+            <!-- Bottom Right: EIP-1559 Shield -->
+            <div class="satellite-card satellite-card-bottom-right">
+              <div style="display:flex;align-items:center;gap:0.4rem;margin-bottom:0.25rem;">
+                <span style="font-size:0.9rem;">⚡</span>
+                <span class="satellite-title" style="margin:0;">EIP-1559 Shield</span>
+              </div>
+              <div class="satellite-value">Real-Time Fee Burn</div>
+              <div style="font-size:0.7rem;color:#ff5b5b;font-weight:700;margin-top:2px;">Anti-Sybil & Anti-DDoS</div>
             </div>
           </div>
 
@@ -534,9 +539,6 @@
           </a>
           <a href="https://github.com/edge-5005/quanthreum" target="_blank" rel="noopener noreferrer" style="color:#cbd5e1;text-decoration:none;font-size:0.8rem;display:flex;align-items:center;gap:4px;">
             <span>🐙 GitHub</span>
-          </a>
-          <a href="/admin" style="color:var(--text-dim);text-decoration:none;font-size:0.75rem;border-left:1px solid rgba(255,255,255,0.1);padding-left:12px;" title="Restricted Operator Node Console (Press Ctrl+Shift+A)">
-            🔒 Operator Node
           </a>
         </div>
       </div>

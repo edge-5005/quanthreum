@@ -174,7 +174,7 @@ async function fetchNodeInfo() {
       if (dot) dot.style.background = "#10b981";
     }
     if (nodeStatusText) {
-      nodeStatusText.innerText = `Quanthreum Online (Block #${data.height})`;
+      nodeStatusText.innerHTML = `<span class="node-status-full">Quanthreum Online (Block #${data.height})</span><span class="node-status-mobile">Block #${data.height}</span>`;
     }
 
     if (statHeight) statHeight.innerText = `#${data.height}`;
@@ -197,7 +197,7 @@ async function fetchNodeInfo() {
       if (dot) dot.style.background = "#f43f5e";
     }
     if (nodeStatusText) {
-      nodeStatusText.innerText = "Node Disconnected";
+      nodeStatusText.innerHTML = `<span class="node-status-full">Node Disconnected</span><span class="node-status-mobile">Offline</span>`;
     }
   }
 }
