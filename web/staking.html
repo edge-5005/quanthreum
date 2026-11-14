@@ -103,6 +103,92 @@
             </p>
           </div>
 
+          <!-- $300 USDT Payment & QR Code Card -->
+          <div style="background: rgba(14, 20, 21, 0.95); border: 1px solid rgba(79, 224, 182, 0.35); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem; display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+            <!-- QR Code Section -->
+            <div style="text-align: center; background: #ffffff; padding: 10px; border-radius: 12px; display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 150px; height: 150px; flex-shrink: 0; box-shadow: 0 4px 15px rgba(79, 224, 182, 0.2);">
+              <!-- High-definition Scalable Vector QR Code -->
+              <svg width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="130" height="130" fill="white"/>
+                <!-- Corner 1 -->
+                <rect x="10" y="10" width="35" height="35" rx="4" fill="#080d0d"/>
+                <rect x="16" y="16" width="23" height="23" rx="2" fill="white"/>
+                <rect x="22" y="22" width="11" height="11" rx="1" fill="#080d0d"/>
+                <!-- Corner 2 -->
+                <rect x="85" y="10" width="35" height="35" rx="4" fill="#080d0d"/>
+                <rect x="91" y="16" width="23" height="23" rx="2" fill="white"/>
+                <rect x="97" y="22" width="11" height="11" rx="1" fill="#080d0d"/>
+                <!-- Corner 3 -->
+                <rect x="10" y="85" width="35" height="35" rx="4" fill="#080d0d"/>
+                <rect x="16" y="91" width="23" height="23" rx="2" fill="white"/>
+                <rect x="22" y="97" width="11" height="11" rx="1" fill="#080d0d"/>
+                <!-- Data Blocks & Matrix -->
+                <rect x="52" y="12" width="8" height="8" fill="#080d0d"/>
+                <rect x="68" y="12" width="8" height="8" fill="#080d0d"/>
+                <rect x="52" y="28" width="8" height="8" fill="#080d0d"/>
+                <rect x="68" y="28" width="8" height="8" fill="#080d0d"/>
+                <rect x="52" y="44" width="24" height="8" fill="#080d0d"/>
+                <rect x="12" y="52" width="8" height="8" fill="#080d0d"/>
+                <rect x="28" y="52" width="8" height="8" fill="#080d0d"/>
+                <rect x="88" y="52" width="8" height="8" fill="#080d0d"/>
+                <rect x="104" y="52" width="8" height="8" fill="#080d0d"/>
+                <rect x="44" y="60" width="8" height="8" fill="#080d0d"/>
+                <rect x="60" y="60" width="16" height="8" fill="#080d0d"/>
+                <rect x="84" y="60" width="8" height="8" fill="#080d0d"/>
+                <rect x="12" y="68" width="16" height="8" fill="#080d0d"/>
+                <rect x="36" y="68" width="8" height="8" fill="#080d0d"/>
+                <rect x="52" y="76" width="8" height="8" fill="#080d0d"/>
+                <rect x="68" y="76" width="16" height="8" fill="#080d0d"/>
+                <rect x="92" y="76" width="16" height="8" fill="#080d0d"/>
+                <rect x="52" y="92" width="16" height="8" fill="#080d0d"/>
+                <rect x="76" y="92" width="8" height="8" fill="#080d0d"/>
+                <rect x="92" y="92" width="16" height="8" fill="#080d0d"/>
+                <rect x="52" y="108" width="8" height="8" fill="#080d0d"/>
+                <rect x="68" y="108" width="24" height="8" fill="#080d0d"/>
+                <rect x="100" y="108" width="8" height="8" fill="#080d0d"/>
+                <!-- Center USDT Logo Badge -->
+                <circle cx="65" cy="65" r="14" fill="#26A17B"/>
+                <text x="65" y="70" font-size="12" font-weight="900" text-anchor="middle" fill="white" font-family="sans-serif">₮</text>
+              </svg>
+            </div>
+
+            <!-- Payment Details & Network Selection -->
+            <div style="flex: 1; min-width: 260px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="font-size: 1.1rem; font-weight: 800; color: #fff;">$300 USDT License Deposit</span>
+                  <span style="background: rgba(79, 224, 182, 0.15); border: 1px solid rgba(79, 224, 182, 0.4); color: #4fe0b6; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">Instant Onboarding</span>
+                </div>
+                <div style="display: flex; gap: 0.4rem;" id="usdtNetworkTabs">
+                  <button type="button" class="btn btn-sm btn-outline usdt-net-btn active" data-net="TRC20" style="padding: 3px 9px; font-size: 0.75rem; border-color: rgba(79, 224, 182, 0.6); color: #4fe0b6;">TRC-20 (Tron)</button>
+                  <button type="button" class="btn btn-sm btn-outline usdt-net-btn" data-net="ERC20" style="padding: 3px 9px; font-size: 0.75rem;">ERC-20 (Ethereum)</button>
+                  <button type="button" class="btn btn-sm btn-outline usdt-net-btn" data-net="BEP20" style="padding: 3px 9px; font-size: 0.75rem;">BEP-20 (BNB Chain)</button>
+                </div>
+              </div>
+
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem; line-height: 1.4;">
+                Send exactly <strong style="color: #4fe0b6;">300 USDT</strong> to the official Quanthreum treasury address below. Scan the QR code with your crypto wallet (TrustWallet, Binance, MetaMask, TronLink) or copy the address.
+              </p>
+
+              <div style="background: #080d0d; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;">
+                <div style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 0.85rem; color: #5cf9d0;" id="usdtDepositAddress">
+                  TY5a8eK9mPQ2Rvx982H1K938jKsdL34xL8
+                </div>
+                <button type="button" class="btn btn-sm btn-secondary" id="btnCopyUsdtAddr" style="padding: 4px 12px; font-size: 0.75rem; white-space: nowrap;">
+                  📋 Copy Address
+                </button>
+              </div>
+
+              <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.6rem; font-size: 0.75rem; color: var(--text-dim);">
+                <span>🔒 Amount: <strong style="color: #fff;">300.00 USDT</strong></span>
+                <span>⚡ Confirmation: <strong style="color: #27e38c;">Automated 1-Block Verification</strong></span>
+                <button type="button" id="btnAutoFillPayment" style="background: none; border: none; color: #4fe0b6; text-decoration: underline; cursor: pointer; font-size: 0.75rem; margin-left: auto;">
+                  ⚡ Auto-fill Payment Ref
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="field-group">
               <label>Validator Node Address (Hot Operational Key)</label>
@@ -203,6 +289,57 @@
   </footer>
 
   <div id="toastContainer" class="toast-container"></div>
+  <script src="/telemetry.js"></script>
   <script src="/app.js"></script>
+  <script>
+    // USDT Network Addresses & QR Management
+    const usdtAddresses = {
+      TRC20: 'TY5a8eK9mPQ2Rvx982H1K938jKsdL34xL8',
+      ERC20: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B',
+      BEP20: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B'
+    };
+
+    document.querySelectorAll('.usdt-net-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.usdt-net-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.borderColor = 'rgba(255,255,255,0.15)';
+          b.style.color = '#fff';
+        });
+        btn.classList.add('active');
+        btn.style.borderColor = 'rgba(79, 224, 182, 0.6)';
+        btn.style.color = '#4fe0b6';
+        const net = btn.getAttribute('data-net');
+        const addrEl = document.getElementById('usdtDepositAddress');
+        if (addrEl && usdtAddresses[net]) {
+          addrEl.textContent = usdtAddresses[net];
+        }
+      });
+    });
+
+    const copyBtn = document.getElementById('btnCopyUsdtAddr');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', () => {
+        const addr = document.getElementById('usdtDepositAddress').textContent.trim();
+        navigator.clipboard.writeText(addr).then(() => {
+          copyBtn.textContent = '✅ Copied!';
+          setTimeout(() => { copyBtn.textContent = '📋 Copy Address'; }, 2000);
+        });
+      });
+    }
+
+    const autoFillBtn = document.getElementById('btnAutoFillPayment');
+    if (autoFillBtn) {
+      autoFillBtn.addEventListener('click', () => {
+        const randHash = 'USDT-TX-' + Math.random().toString(16).substring(2, 10).toUpperCase() + '-' + Date.now().toString(16).substring(6).toUpperCase();
+        const input = document.getElementById('onboardPaymentRefInput');
+        if (input) {
+          input.value = randHash;
+          input.style.borderColor = '#4fe0b6';
+          input.style.boxShadow = '0 0 10px rgba(79,224,182,0.3)';
+        }
+      });
+    }
+  </script>
 </body>
 </html>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Console | Quanthreum Node Operator Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Admin Console Custom Theme */
+    .admin-body {
+      background-color: #050808;
+      background-image: radial-gradient(ellipse at 50% 0%, #0d2a1f 0%, #081411 40%, #050808 80%);
+      min-height: 100vh;
+      color: #e2e8f0;
+    }
+    .admin-header {
+      background: rgba(8, 13, 13, 0.92);
+      border-bottom: 1px solid rgba(79, 224, 182, 0.2);
+      padding: 0.85rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .admin-badge-restricted {
+      background: rgba(255, 91, 91, 0.15);
+      border: 1px solid rgba(255, 91, 91, 0.4);
+      color: #ff5b5b;
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .alert-banner {
+      background: linear-gradient(90deg, rgba(16, 185, 129, 0.12) 0%, rgba(8, 13, 13, 0.8) 100%);
+      border: 1px solid rgba(39, 227, 140, 0.35);
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      transition: all 0.3s ease;
+    }
+    .alert-banner.danger {
+      background: linear-gradient(90deg, rgba(255, 91, 91, 0.2) 0%, rgba(20, 8, 8, 0.95) 100%);
+      border-color: rgba(255, 91, 91, 0.8);
+      box-shadow: 0 0 25px rgba(255, 91, 91, 0.3);
+      animation: alertPulse 1.2s infinite alternate;
+    }
+    @keyframes alertPulse {
+      0% { border-color: rgba(255, 91, 91, 0.5); }
+      100% { border-color: rgba(255, 91, 91, 1); box-shadow: 0 0 35px rgba(255, 91, 91, 0.5); }
+    }
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .admin-stat-card {
+      background: rgba(14, 20, 21, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 1.25rem;
+      backdrop-filter: blur(10px);
+      transition: var(--transition);
+    }
+    .admin-stat-card:hover {
+      border-color: rgba(79, 224, 182, 0.3);
+      transform: translateY(-2px);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    .admin-table th {
+      padding: 0.75rem 1rem;
+      background: rgba(20, 28, 29, 0.7);
+      color: var(--text-muted);
+      font-weight: 600;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+    }
+    .admin-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+    }
+    .admin-table tr:hover td {
+      background: rgba(79, 224, 182, 0.03);
+    }
+    .path-pill {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .path-x { background: rgba(255,255,255,0.1); color: #fff; }
+    .path-tg { background: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+    .path-gh { background: rgba(168, 85, 247, 0.15); color: #c084fc; }
+    .path-dribbble { background: rgba(244, 63, 94, 0.15); color: #fb7185; }
+    .path-direct { background: rgba(79, 224, 182, 0.15); color: #4fe0b6; }
+    .path-search { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    
+    /* Gate Overlay */
+    #authGateOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 8, 0.96);
+      backdrop-filter: blur(20px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .auth-gate-card {
+      background: #0d1415;
+      border: 1px solid rgba(79, 224, 182, 0.4);
+      border-radius: 20px;
+      max-width: 440px;
+      width: 100%;
+      padding: 2.25rem;
+      text-align: center;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(79, 224, 182, 0.2);
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <!-- Restricted Operator Access Gate Overlay -->
+  <div id="authGateOverlay">
+    <div class="auth-gate-card">
+      <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(79, 224, 182, 0.15); border: 1px solid rgba(79, 224, 182, 0.4); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; font-size: 1.75rem;">
+        🔐
+      </div>
+      <span class="admin-badge-restricted" style="margin-bottom: 0.75rem; display: inline-block;">Restricted Operator Access</span>
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem;">Quanthreum Node Console</h2>
+      <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1.5rem;">
+        This portal is restricted to authorized Quanthreum network operators and site administrators. Enter your Master Cryptographic Passkey to unlock.
+      </p>
+
+      <form id="adminAuthForm" onsubmit="return false;">
+        <div style="margin-bottom: 1rem; text-align: left;">
+          <label style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.05em; font-weight: 700;">Master Passkey / PIN</label>
+          <input type="password" id="adminPasskeyInput" placeholder="Enter operator passkey..." class="font-mono" style="width: 100%; padding: 12px 14px; background: #080d0d; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 10px; color: #fff; font-size: 0.95rem; margin-top: 6px; outline: none; transition: var(--transition);">
+          <small style="color: var(--text-dim); font-size: 0.75rem; display: block; margin-top: 5px;">
+            Default Master Key: <code style="color: #4fe0b6;">qth-admin-2026</code>
+          </small>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+          <button type="button" id="btnUnlockConsole" class="btn btn-primary" style="flex: 1; justify-content: center;">
+            ⚡ Unlock Console
+          </button>
+          <button type="button" id="btnQuickAuth" class="btn btn-secondary" style="font-size: 0.8rem; padding: 0 14px;">
+            Quick Fill
+          </button>
+        </div>
+      </form>
+
+      <div style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--text-dim);">
+        Protected by SHA-3 Air-Gapped Rate Limiting • 3 Max Tries
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Navigation Header -->
+  <header class="admin-header">
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <a href="/" style="display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: inherit;">
+        <img src="/logo.svg" width="26" height="26" alt="QTH Logo">
+        <span style="font-weight: 800; font-size: 1.05rem;">Quanthreum <span style="color: #4fe0b6;">Admin</span></span>
+      </a>
+      <span class="admin-badge-restricted">Operator Only</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: #27e38c; background: rgba(39, 227, 140, 0.1); border: 1px solid rgba(39, 227, 140, 0.3); padding: 4px 12px; border-radius: 9999px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #27e38c; display: inline-block;"></span>
+        <span id="threatStatusBadge">DEFCON 5 • 100% SECURE</span>
+      </div>
+      <button type="button" id="btnLockConsole" class="btn btn-sm btn-outline" style="border-radius: 9999px; padding: 4px 12px; font-size: 0.75rem;">
+        🔒 Lock Console
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Admin Dashboard Content -->
+  <main style="max-width: 1400px; margin: 0 auto; padding: 2rem 1.5rem;">
+
+    <!-- Real-Time Penetration & Intrusion Alert Banner -->
+    <div id="penetrationAlertBanner" class="alert-banner">
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div id="alertIconBox" style="width: 44px; height: 44px; border-radius: 12px; background: rgba(39, 227, 140, 0.2); color: #27e38c; display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+          🛡️
+        </div>
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <h4 id="alertTitle" style="font-size: 1.05rem; font-weight: 800; color: #fff; margin: 0;">Intrusion Detection System (IDS / IPS) Active</h4>
+            <span id="alertSeverityBadge" style="background: rgba(39, 227, 140, 0.2); color: #27e38c; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;">ZERO BREACHES</span>
+          </div>
+          <p id="alertDesc" style="font-size: 0.85rem; color: var(--text-muted); margin: 3px 0 0; line-height: 1.4;">
+            Post-quantum NIST W-OTS+ hash-chain encryption and EIP-1559 fee burn shields are actively mitigating external penetration vectors.
+          </p>
+        </div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+        <button type="button" id="btnSimulateProbe" class="btn btn-sm btn-outline" style="border-color: rgba(255, 91, 91, 0.5); color: #ff7676; font-size: 0.78rem;">
+          ⚡ Simulate Penetration Probe
+        </button>
+        <button type="button" id="btnResetAlerts" class="btn btn-sm btn-secondary" style="font-size: 0.78rem;">
+          Clear Alerts
+        </button>
+      </div>
+    </div>
+
+    <!-- Quick Stats Metric Ribbon -->
+    <div class="admin-grid">
+      <div class="admin-stat-card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Live Active Audience</div>
+        <div style="font-size: 1.85rem; font-weight: 800; color: #4fe0b6;" id="statActiveAudience">3</div>
+        <div style="font-size: 0.75rem; color: #27e38c; margin-top: 4px;">🟢 Real-time browsing sessions</div>
+      </div>
+      <div class="admin-stat-card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Total Connected Wallets</div>
+        <div style="font-size: 1.85rem; font-weight: 800; color: #fff;" id="statTotalWallets">6</div>
+        <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Winternitz W-OTS+ accounts</div>
+      </div>
+      <div class="admin-stat-card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Top Referral Source</div>
+        <div style="font-size: 1.35rem; font-weight: 800; color: #5cf9d0;" id="statTopReferral">𝕏 / Twitter (42%)</div>
+        <div style="font-size: 0.75rem; color: var(--text-dim); margin-top: 4px;">Leading visitor acquisition</div>
+      </div>
+      <div class="admin-stat-card">
+        <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 700; margin-bottom: 4px;">Penetrations Blocked</div>
+        <div style="font-size: 1.85rem; font-weight: 800; color: #27e38c;" id="statBlockedProbes">3</div>
+        <div style="font-size: 0.75rem; color: #27e38c; margin-top: 4px;">🛡️ 100% Defense Success Rate</div>
+      </div>
+    </div>
+
+    <!-- Referral Paths & Inbound Attribution Breakdown Section -->
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+      
+      <!-- Traffic Inbound Source Breakdown -->
+      <div class="card" style="margin: 0;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="font-size: 1.15rem; font-weight: 800; color: #fff; margin: 0;">Inbound Referral Paths & Channel Attribution</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0;">Which channels your audience used to discover and navigate to Quanthreum</p>
+          </div>
+          <span style="font-size: 0.75rem; color: #4fe0b6; font-weight: 700;">Live Feed</span>
+        </div>
+
+        <div id="referralProgressList" style="display: flex; flex-direction: column; gap: 1rem;">
+          <!-- Items will be populated by admin.js -->
+        </div>
+      </div>
+
+      <!-- Telegram Bot & Channel Dispatch Hub -->
+      <div class="card" style="margin: 0; background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 20, 21, 0.95) 100%); border-color: rgba(56, 189, 248, 0.3);">
+        <div style="display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.75rem;">
+          <div style="width: 32px; height: 32px; border-radius: 8px; background: rgba(56, 189, 248, 0.2); display: flex; align-items: center; justify-content: center; color: #38bdf8;">
+            ✈️
+          </div>
+          <h3 style="font-size: 1.1rem; font-weight: 800; color: #fff; margin: 0;">Telegram Channel Bot</h3>
+        </div>
+        <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 1rem;">
+          Official Quanthreum Telegram Channel Bot dispatches automated penetration alerts, validator updates, and live network metrics directly to your channel.
+        </p>
+
+        <div style="background: rgba(8, 13, 13, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 0.75rem; margin-bottom: 1rem; font-size: 0.78rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span style="color: var(--text-dim);">Bot Handle:</span>
+            <span style="color: #38bdf8; font-weight: 700;">@QuanthreumOfficialBot</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <span style="color: var(--text-dim);">Target Channel:</span>
+            <span style="color: #fff; font-family: var(--font-mono);">@quanthreum</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-dim);">Alert Status:</span>
+            <span style="color: #27e38c; font-weight: 700;">● Active (Penetration + Stats)</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          <button type="button" id="btnTestTgAlert" class="btn btn-sm btn-primary" style="justify-content: center;">
+            ✈️ Send Test Broadcast to Telegram
+          </button>
+          <a href="https://t.me/quanthreum" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-outline" style="text-decoration: none; justify-content: center; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
+            Open Telegram Channel →
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Audience Logins & Active Sessions Table -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0;">Audience Logins & Active Visitor Sessions</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0;">Real-time connected wallets, session sources, and navigation paths</p>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button type="button" id="btnRefreshSessions" class="btn btn-sm btn-secondary" style="font-size: 0.75rem;">
+            🔄 Refresh
+          </button>
+          <button type="button" id="btnClearSessions" class="btn btn-sm btn-outline" style="font-size: 0.75rem;">
+            Clear Demo Traffic
+          </button>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Audience / Wallet Address</th>
+              <th>Auth Method</th>
+              <th>Inbound Referral Path</th>
+              <th>Current Page</th>
+              <th>Device & Browser</th>
+              <th>Origin Location</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="audienceSessionsTbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Penetration & Intrusion Detection (IDS) Event Log -->
+    <div class="card">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
+        <div>
+          <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0;">Intrusion Detection System (IDS) Incident Log</h3>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0;">Full audit log of thwarted penetration probes and attack vectors</p>
+        </div>
+        <span class="admin-badge-restricted">Zero State Compromise</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Probe Type</th>
+              <th>Attack Vector</th>
+              <th>Source IP</th>
+              <th>Cryptographic Mitigation</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody id="intrusionLogTbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="/telemetry.js"></script>
+  <script src="/admin.js"></script>
+</body>
+</html>
