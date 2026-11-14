@@ -273,14 +273,14 @@
           <span>Start now</span>
           <span style="display:inline-flex;width:28px;height:28px;border-radius:50%;background:#071912;color:#4fe0b6;align-items:center;justify-content:center;font-size:0.9rem;font-weight:900;">→</span>
         </a>
-        <div class="hero-sub-actions" style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;justify-content:center;">
-          <a href="/wallet" class="btn btn-secondary btn-sm" style="border-radius:9999px;padding:8px 18px;">
+        <div class="hero-sub-actions">
+          <a href="/wallet" class="btn btn-secondary btn-sm" style="border-radius:9999px;">
             Open QTH Wallet
           </a>
-          <a href="/explorer" class="btn btn-tertiary btn-sm" style="border-radius:9999px;padding:8px 18px;">
+          <a href="/explorer" class="btn btn-tertiary btn-sm" style="border-radius:9999px;">
             Live Block Explorer
           </a>
-          <a href="/staking" class="btn btn-sm" style="border-radius:9999px;padding:8px 18px;background:rgba(39,227,140,0.12);border:1px solid rgba(39,227,140,0.35);color:#27e38c;font-weight:700;">
+          <a href="/staking" class="btn btn-sm" style="border-radius:9999px;background:rgba(39,227,140,0.12);border:1px solid rgba(39,227,140,0.35);color:#27e38c;font-weight:700;">
             Validator Portal (Q-PoS)
           </a>
         </div>
@@ -292,28 +292,36 @@
     <section class="stats-ribbon">
       <div class="stat-card">
         <div class="stat-label">Block Height</div>
-        <div class="stat-value" id="statHeight">-</div>
-        <div class="stat-sub" id="statBlocksCount">0 blocks synced</div>
+        <div class="stat-value" id="statHeight">#0</div>
+        <div class="stat-sub" id="statBlocksCount">1 blocks synced</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Total Max Supply</div>
-        <div class="stat-value"><span class="accent-cyan">100,000,000</span> <span class="unit">QTH</span></div>
+        <div class="stat-value"><span class="stat-num accent-cyan">100,000,000</span> <span class="unit">QTH</span></div>
         <div class="stat-sub">Strict hard cap</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Circulating Supply</div>
-        <div class="stat-value" id="statCirculating">-</div>
+        <div class="stat-value" id="statCirculating"><span class="stat-num">10,000,000</span> <span class="unit">QTH</span></div>
         <div class="stat-sub">Accounts & Staked QTH</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">EIP-1559 Burned</div>
-        <div class="stat-value font-mono accent-rose" id="statBurned">-</div>
+        <div class="stat-value font-mono accent-rose" id="statBurned"><span class="stat-num font-mono accent-rose">0.000000</span> <span class="unit">QTH</span></div>
         <div class="stat-sub">Permanently destroyed</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-label">Base Gas Fee</div>
-        <div class="stat-value font-mono" id="statBaseFee">-</div>
-        <div class="stat-sub">Dynamic Gas Pricing</div>
+      <div class="stat-card stat-card-wide">
+        <div class="stat-card-wide-inner">
+          <div>
+            <div class="stat-label">Base Gas Fee</div>
+            <div class="stat-value font-mono" id="statBaseFee"><span class="stat-num font-mono">0.00001000</span> <span class="unit">QTH</span></div>
+            <div class="stat-sub">Dynamic EIP-1559 Pricing</div>
+          </div>
+          <div class="stat-gas-badge">
+            <span class="status-dot pulsing" style="background:#4fe0b6;width:6px;height:6px;display:inline-block;border-radius:50%;"></span>
+            <span>EIP-1559 Active</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -325,7 +333,7 @@
         <p class="section-desc">Each segment of Quanthreum is hosted on its own dedicated page for enhanced isolation, security, and responsive performance.</p>
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+      <div class="ecosystem-grid">
         
         <!-- Segment 1: Create QTH Wallet -->
         <div class="card" style="display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(79, 224, 182, 0.3); background: linear-gradient(135deg, rgba(79, 224, 182, 0.08) 0%, rgba(14, 20, 21, 0.95) 100%);">
@@ -551,23 +559,47 @@
   <!-- iOS Mobile Bottom App Navigation Bar -->
   <nav class="ios-tab-bar" aria-label="Mobile Navigation">
     <a href="/" class="ios-tab-item active">
-      <span class="ios-tab-icon">🏠</span>
+      <span class="ios-tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+      </span>
       <span class="ios-tab-label">Home</span>
     </a>
     <a href="/wallet" class="ios-tab-item">
-      <span class="ios-tab-icon">💼</span>
+      <span class="ios-tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+          <path d="M4 6v12a2 2 0 0 0 2 2h14v-4"></path>
+          <path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"></path>
+        </svg>
+      </span>
       <span class="ios-tab-label">Wallet</span>
     </a>
     <a href="/staking" class="ios-tab-item">
-      <span class="ios-tab-icon">⚡</span>
+      <span class="ios-tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+        </svg>
+      </span>
       <span class="ios-tab-label">Stake</span>
     </a>
     <a href="/explorer" class="ios-tab-item">
-      <span class="ios-tab-icon">🔍</span>
+      <span class="ios-tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </span>
       <span class="ios-tab-label">Explorer</span>
     </a>
     <a href="/security" class="ios-tab-item">
-      <span class="ios-tab-icon">🛡️</span>
+      <span class="ios-tab-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+        </svg>
+      </span>
       <span class="ios-tab-label">Security</span>
     </a>
   </nav>

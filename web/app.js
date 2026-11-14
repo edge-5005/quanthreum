@@ -178,10 +178,19 @@ async function fetchNodeInfo() {
     }
 
     if (statHeight) statHeight.innerText = `#${data.height}`;
-    if (statBlocksCount) statBlocksCount.innerText = `${data.total_blocks} blocks synced`;
-    if (statCirculating) statCirculating.innerText = `${Number(data.circulating_supply).toLocaleString(undefined, {maximumFractionDigits: 2})} QTH`;
-    if (statBurned) statBurned.innerText = `${Number(data.burned_fees).toFixed(6)} QTH`;
-    if (statBaseFee) statBaseFee.innerText = `${Number(data.base_fee).toFixed(8)} QTH`;
+    if (statBlocksCount) statBlocksCount.innerText = `${data.total_blocks} block${data.total_blocks === 1 ? '' : 's'} synced`;
+    if (statCirculating) {
+      const circFormatted = Number(data.circulating_supply).toLocaleString('en-US', {maximumFractionDigits: 2});
+      statCirculating.innerHTML = `<span class="stat-num">${circFormatted}</span> <span class="unit">QTH</span>`;
+    }
+    if (statBurned) {
+      const burnedFormatted = Number(data.burned_fees).toFixed(6);
+      statBurned.innerHTML = `<span class="stat-num font-mono accent-rose">${burnedFormatted}</span> <span class="unit">QTH</span>`;
+    }
+    if (statBaseFee) {
+      const baseFeeFormatted = Number(data.base_fee).toFixed(8);
+      statBaseFee.innerHTML = `<span class="stat-num font-mono">${baseFeeFormatted}</span> <span class="unit">QTH</span>`;
+    }
 
     if (data.height !== currentHeight) {
       currentHeight = data.height;

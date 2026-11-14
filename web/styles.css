@@ -779,10 +779,22 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   transform: translateY(-2px);
 }
 
+.hero-bottom-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+  z-index: 2;
+  position: relative;
+}
+
 .hero-sub-actions {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
 }
 
 /* Buttons Base */
@@ -871,6 +883,10 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   border-radius: var(--radius-lg);
   backdrop-filter: blur(10px);
   transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 110px;
 }
 
 .stat-card:hover {
@@ -879,24 +895,76 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
 }
 
 .stat-label {
-  font-size: 0.775rem;
+  font-size: 0.75rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  font-weight: 600;
   margin-bottom: 0.35rem;
 }
 
 .stat-value {
-  font-size: 1.5rem;
+  font-size: 1.45rem;
   font-weight: 700;
   color: #fff;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stat-value .stat-num {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.stat-value .unit {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #8b9b9b;
+  margin-left: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .stat-sub {
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   color: var(--text-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+}
+
+.stat-card-wide {
+  grid-column: span 2;
+}
+
+.stat-card-wide-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.stat-gas-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 4px 10px;
+  background: rgba(79, 224, 182, 0.1);
+  border: 1px solid rgba(79, 224, 182, 0.25);
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-mint);
+}
+
+.ecosystem-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 /* Content Sections */
@@ -1963,7 +2031,11 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   }
 
   body {
-    padding-bottom: calc(75px + env(safe-area-inset-bottom, 16px)) !important;
+    padding-bottom: calc(90px + env(safe-area-inset-bottom, 24px)) !important;
+  }
+
+  .main-content {
+    padding: 0 0.85rem !important;
   }
 
   /* iOS Frosted Glass Bottom Navigation Bar */
@@ -1973,16 +2045,17 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
     bottom: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    height: calc(56px + env(safe-area-inset-bottom, 14px)) !important;
-    padding-bottom: env(safe-area-inset-bottom, 14px) !important;
-    background: rgba(10, 16, 17, 0.9) !important;
-    backdrop-filter: blur(24px) saturate(180%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-    z-index: 999 !important;
+    height: calc(64px + env(safe-area-inset-bottom, 20px)) !important;
+    padding-top: 6px !important;
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 20px)) !important;
+    background: rgba(8, 13, 13, 0.94) !important;
+    backdrop-filter: blur(28px) saturate(190%) !important;
+    -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    z-index: 9999 !important;
     align-items: center !important;
     justify-content: space-around !important;
-    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.6) !important;
+    box-shadow: 0 -10px 32px rgba(0, 0, 0, 0.7) !important;
   }
 
   .ios-tab-item {
@@ -1995,9 +2068,10 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
     height: 100% !important;
     color: #8b9b9b !important;
     text-decoration: none !important;
-    font-size: 0.68rem !important;
+    font-size: 0.65rem !important;
     font-weight: 600 !important;
-    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    transition: all 0.15s ease !important;
+    -webkit-tap-highlight-color: transparent !important;
   }
 
   .ios-tab-item:active {
@@ -2009,12 +2083,24 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   }
 
   .ios-tab-icon {
-    font-size: 1.25rem !important;
-    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 22px !important;
+    height: 22px !important;
+    stroke: #8b9b9b !important;
   }
 
-  .ios-tab-item.active .ios-tab-icon {
-    filter: drop-shadow(0 0 8px rgba(79, 224, 182, 0.6)) !important;
+  .ios-tab-icon svg {
+    width: 20px !important;
+    height: 20px !important;
+    stroke: currentColor !important;
+    transition: all 0.15s ease !important;
+  }
+
+  .ios-tab-item.active .ios-tab-icon svg {
+    stroke: var(--accent-mint) !important;
+    filter: drop-shadow(0 0 8px rgba(79, 224, 182, 0.55)) !important;
     transform: translateY(-1px) !important;
   }
 
@@ -2026,8 +2112,8 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
 
   .phone-mockup-wrapper {
     width: 100% !important;
-    max-width: 330px !important;
-    margin: 1.5rem auto !important;
+    max-width: 320px !important;
+    margin: 1.25rem auto !important;
     position: relative !important;
     display: flex !important;
     flex-direction: column !important;
@@ -2037,17 +2123,17 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   .phone-mockup {
     order: 1 !important;
     width: 100% !important;
-    max-width: 310px !important;
+    max-width: 300px !important;
     height: auto !important;
-    min-height: 520px !important;
-    padding: 10px !important;
-    border-radius: 36px !important;
+    min-height: auto !important;
+    padding: 8px !important;
+    border-radius: 32px !important;
   }
 
   .phone-screen {
-    border-radius: 28px !important;
-    padding: 1.25rem 1rem !important;
-    gap: 1rem !important;
+    border-radius: 26px !important;
+    padding: 1.1rem 0.9rem !important;
+    gap: 0.75rem !important;
   }
 
   .satellite-cards-cluster {
@@ -2073,14 +2159,96 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
     box-sizing: border-box !important;
   }
 
-  .stats-ribbon {
-    grid-template-columns: repeat(2, 1fr) !important;
+  .hero-bottom-cta {
+    width: 100% !important;
+    max-width: 440px !important;
+    margin: 1.5rem auto 0 !important;
     gap: 0.75rem !important;
-    padding: 1rem !important;
+    padding: 0 0.5rem !important;
   }
 
-  .stat-card:last-child {
+  .btn-hero-glow {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 0.85rem 1.5rem !important;
+  }
+
+  .hero-sub-actions {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0.65rem !important;
+    width: 100% !important;
+  }
+
+  .hero-sub-actions a {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 10px 12px !important;
+    font-size: 0.82rem !important;
+    white-space: nowrap !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-sub-actions a:last-child {
     grid-column: span 2 !important;
+  }
+
+  .stats-ribbon {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.65rem !important;
+    padding: 0 !important;
+    margin: 1.25rem 0 2.5rem !important;
+  }
+
+  .stat-card {
+    padding: 0.85rem 0.75rem !important;
+    border-radius: 14px !important;
+    min-height: 104px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
+  }
+
+  .stat-label {
+    font-size: 0.68rem !important;
+    margin-bottom: 0.25rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .stat-value {
+    font-size: clamp(0.95rem, 3.6vw, 1.2rem) !important;
+    line-height: 1.2 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: flex !important;
+    align-items: baseline !important;
+  }
+
+  .stat-value .unit {
+    font-size: 0.68rem !important;
+    margin-left: 3px !important;
+  }
+
+  .stat-sub {
+    font-size: 0.68rem !important;
+    margin-top: 0.25rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .stat-card:last-child,
+  .stat-card-wide {
+    grid-column: span 2 !important;
+    min-height: 76px !important;
+  }
+
+  .stat-card-wide-inner {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
   }
 
   .staking-grid,
@@ -2094,16 +2262,6 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
     min-height: 48px !important;
     touch-action: manipulation !important;
   }
-
-  .hero-sub-actions {
-    flex-direction: column !important;
-    width: 100% !important;
-  }
-
-  .hero-sub-actions a {
-    width: 100% !important;
-    text-align: center !important;
-  }
 }
 
 /* Small Handhelds (iPhone SE / 360px - 400px) */
@@ -2114,8 +2272,7 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   }
 
   .phone-mockup {
-    max-width: 285px !important;
-    min-height: 480px !important;
+    max-width: 280px !important;
   }
 
   .crypto-tokens-row {
@@ -2128,10 +2285,15 @@ button, a, [role="button"], .crypto-token-badge, .ios-tab-item {
   }
 
   .stats-ribbon {
-    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
   }
 
-  .stat-card:last-child {
-    grid-column: span 1 !important;
+  .stat-card {
+    padding: 0.75rem 0.65rem !important;
+    min-height: 98px !important;
+  }
+
+  .stat-value {
+    font-size: clamp(0.85rem, 3.5vw, 1.1rem) !important;
   }
 }
