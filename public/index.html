@@ -555,35 +555,134 @@
     <section id="staking" class="content-section">
       <div class="section-header">
         <span class="section-tag">Quantum Proof of Stake</span>
-        <h2 class="section-title">Q-PoS Validator Staking & Block Engine</h2>
-        <p class="section-desc">Stake QTH to participate in network consensus and earn block rewards + gas tips.</p>
+        <h2 class="section-title">Q-PoS Validator Staking & Dual-Key Node Portal</h2>
+        <p class="section-desc">Onboard validator nodes, enforce 50 QTH daily reward limits, configure dual-key cold storage, and seal blocks.</p>
       </div>
 
-      <div class="staking-grid">
-        <div class="card">
-          <h3>Register as a Validator</h3>
-          <p class="tab-desc">Minimum required stake: <strong>10.0 QTH</strong>. Locked in consensus state.</p>
+      <!-- Validator Economics Metrics Ribbon -->
+      <div class="validator-econ-banner">
+        <div class="econ-metric-item">
+          <span class="econ-label">Validator License Fee</span>
+          <span class="econ-val accent-gold">$300 USDT</span>
+          <span class="econ-sub">One-time registration fee</span>
+        </div>
+        <div class="econ-metric-item">
+          <span class="econ-label">Onboarding Grant</span>
+          <span class="econ-val accent-cyan">+1,000 QTH</span>
+          <span class="econ-sub">Credited upon fee verification</span>
+        </div>
+        <div class="econ-metric-item">
+          <span class="econ-label">Daily Earnings Cap</span>
+          <span class="econ-val accent-purple">50.0 QTH / Day</span>
+          <span class="econ-sub">Strict per-node 24h ceiling</span>
+        </div>
+        <div class="econ-metric-item">
+          <span class="econ-label">Reward Distribution</span>
+          <span class="econ-val accent-green">Stake-Proportional</span>
+          <span class="econ-sub">Higher stake = higher block yield</span>
+        </div>
+        <div class="econ-metric-item">
+          <span class="econ-label">Reference Target</span>
+          <span class="econ-val accent-white">$15.00 / QTH</span>
+          <span class="econ-sub">Benchmark token valuation</span>
+        </div>
+      </div>
 
-          <div class="field-group">
-            <label>Stake Amount (QTH)</label>
-            <input type="number" id="stakeAmountInput" value="32.0" step="1.0" min="10.0">
+      <div class="staking-grid" style="margin-top: 1.5rem;">
+        <!-- Dual-Key Onboarding Card -->
+        <div class="card" style="grid-column: span 2;">
+          <div class="card-header-flex">
+            <div>
+              <h3>🛡️ Validator Onboarding & Dual-Key Security Setup</h3>
+              <p class="tab-desc">Activate your node license with $300 USDT, receive your 1,000 QTH onboarding allocation, and isolate your cold treasury from your operational validator node.</p>
+            </div>
+            <span class="badge-entropy">Cold Storage Security</span>
           </div>
 
-          <button class="btn btn-primary btn-full" id="btnSubmitStake">
+          <div class="dual-key-explanation" style="background: rgba(0, 240, 255, 0.04); border: 1px solid rgba(0, 240, 255, 0.15); border-radius: 8px; padding: 1rem; margin-bottom: 1.25rem;">
+            <p style="margin: 0; font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">
+              <strong>Dual-Key Protection Architecture:</strong><br>
+              • <strong>Cold Depositor Address:</strong> Stored offline in encrypted removable storage or physical safe. Receives minted block rewards and retains ownership of tokens.<br>
+              • <strong>Hot Validator Node Address:</strong> Runs on your cloud server/daemon to sign blocks using quantum Winternitz keys. If the node is ever compromised, your cold principal cannot be stolen.
+            </p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="field-group">
+              <label>Validator Node Address (Hot Operational Key)</label>
+              <input type="text" id="onboardValidatorAddrInput" placeholder="0xQTH_..." class="font-mono">
+              <small class="field-hint" style="color: var(--text-muted); font-size: 0.75rem;">Address of the server/machine executing consensus block proposals.</small>
+            </div>
+
+            <div class="field-group">
+              <label>Depositor Treasury Address (Cold Safe Storage Key)</label>
+              <input type="text" id="onboardDepositorAddrInput" placeholder="0xQTH_... (Optional: defaults to validator address)" class="font-mono">
+              <small class="field-hint" style="color: var(--text-muted); font-size: 0.75rem;">Cold wallet receiving the 1,000 QTH credit and all block yields.</small>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem;">
+            <div class="field-group">
+              <label>Registration Fee Payment Reference / TX Hash ($300 USDT)</label>
+              <input type="text" id="onboardPaymentRefInput" placeholder="e.g. USDT-TX-883921... or invoice reference" class="font-mono">
+              <small class="field-hint" style="color: var(--text-muted); font-size: 0.75rem;">USDT on Ethereum / TRON / BSC or Quanthreum treasury reference.</small>
+            </div>
+
+            <div class="field-group">
+              <label>Initial Collateral to Auto-Stake (from 1,000 QTH Grant)</label>
+              <input type="number" id="onboardAutoStakeInput" value="100.0" min="10.0" max="1000.0" step="10.0">
+              <small class="field-hint" style="color: var(--text-muted); font-size: 0.75rem;">Min 10.0 QTH. Remaining balance remains liquid in cold depositor wallet.</small>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 1rem; margin-top: 1.25rem; flex-wrap: wrap;">
+            <button class="btn btn-primary" id="btnOnboardValidator" style="flex: 1; min-width: 260px;">
+              ⚡ Activate Validator License ($300 → 1,000 QTH)
+            </button>
+            <button class="btn btn-outline" id="btnDownloadValidatorBackup" style="flex: 1; min-width: 260px;">
+              💾 Download Validator Backup & Config File
+            </button>
+          </div>
+
+          <div id="onboardResultBox" class="account-details-panel" style="display: none; margin-top: 1.25rem;">
+            <h4 style="color: #00f0ff; margin-bottom: 0.5rem;">✅ Validator Onboarding Confirmed</h4>
+            <div class="details-grid">
+              <div><strong>Validator Node:</strong> <span id="onboardResValAddr" class="font-mono"></span></div>
+              <div><strong>Depositor (Cold Key):</strong> <span id="onboardResDepAddr" class="font-mono"></span></div>
+              <div><strong>Credited Grant:</strong> <span class="font-mono accent-cyan font-bold">1,000.00 QTH</span></div>
+              <div><strong>Initial Active Stake:</strong> <span id="onboardResStake" class="font-mono accent-gold font-bold"></span> QTH</div>
+              <div><strong>Daily Earning Cap:</strong> <span class="font-mono accent-purple font-bold">50.00 QTH / 24h</span></div>
+              <div><strong>Backup Status:</strong> <span class="accent-green">Ready for Removable Drive / Safe</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Stake Pool Deposit -->
+        <div class="card">
+          <h3>Deposit Additional Stake</h3>
+          <p class="tab-desc">Increase your validator's stake weight. Higher stakes proportionally increase block selection probability and block rewards up to 50 QTH/day.</p>
+
+          <div class="field-group">
+            <label>Additional Stake Amount (QTH)</label>
+            <input type="number" id="stakeAmountInput" value="50.0" step="5.0" min="10.0">
+          </div>
+
+          <button class="btn btn-secondary btn-full" id="btnSubmitStake">
             Deposit Stake into Q-PoS Pool
           </button>
         </div>
 
+        <!-- Propose & Seal Block Card -->
         <div class="card">
           <h3>Propose & Seal Block</h3>
-          <p class="tab-desc">Execute pending mempool transactions, burn EIP-1559 base fees, and mint validator yield.</p>
+          <p class="tab-desc">Process pending transactions in the mempool, enforce the 50 QTH validator daily cap, burn EIP-1559 base fees, and mint stake-weighted rewards.</p>
 
           <div class="field-group">
-            <label>Proposing Validator Address</label>
+            <label>Proposing Validator Node Address</label>
             <input type="text" id="sealValidatorAddrInput" placeholder="0xQTH_..." class="font-mono">
           </div>
 
-          <button class="btn btn-secondary btn-full" id="btnSealBlock">
+          <button class="btn btn-outline btn-full" id="btnSealBlock">
             Propose & Seal Block Now
           </button>
         </div>
@@ -825,19 +924,23 @@
           </ul>
 
           <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #00f2fe;padding-left:0.75rem;">4. Quanthreum Virtual Machine (QVM) & Consensus</h3>
-          <p>Quanthreum maintains full state-machine compatibility with EVM architecture while substituting the cryptographic verification layer. The ledger implements <strong>Quantum Proof-of-Stake (Q-PoS)</strong>:</p>
+          <p>Quanthreum maintains full state-machine compatibility with EVM architecture while substituting the cryptographic verification layer. The ledger implements <strong>Quantum Proof-of-Stake (Q-PoS)</strong> with dual-key security architecture:</p>
           <ul style="padding-left:1.5rem;margin-bottom:1rem;">
-            <li><strong>Validator Registry:</strong> Staking threshold of 10.0 QTH allows any node operator to participate in block sealing.</li>
-            <li><strong>Deterministic Scheduling:</strong> Proposers are pseudorandomly selected based on stake weight and previous block state root entropy.</li>
-            <li><strong>Block Target:</strong> 6-second block intervals with sub-second finality.</li>
+            <li><strong>Dual-Key Isolation:</strong> Cold Depositor Address (kept safely offline in encrypted storage or safe) holds custody of funds and receives yields, while Hot Operator Address signs block proposals.</li>
+            <li><strong>Validator Registry & Grant:</strong> $300 USD/USDT one-time registration activates validator status and credits an onboarding allocation of 1,000 QTH. Minimum active staking threshold is 10.0 QTH.</li>
+            <li><strong>Stake-Proportional Selection:</strong> Proposers are selected probabilistically based on stake weight, aligning incentives with network capital commitment.</li>
+            <li><strong>Block Target:</strong> 2-second block intervals with sub-second cryptographic finality.</li>
           </ul>
 
-          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #00f2fe;padding-left:0.75rem;">5. Deflationary Tokenomics</h3>
-          <p>Quanthreum enforces a strict, mathematical tokenomic model:</p>
-          <div style="background:#050811;padding:1rem;border-radius:8px;font-family:monospace;margin-bottom:1rem;border:1px solid rgba(255,255,255,0.06);">
+          <h3 style="color:#fff;font-size:1.4rem;margin-top:2rem;margin-bottom:0.75rem;border-left:4px solid #00f2fe;padding-left:0.75rem;">5. Deflationary Tokenomics & Yield Quota</h3>
+          <p>Quanthreum enforces a strict, mathematical tokenomic model with daily earning limits to eliminate hyperinflation:</p>
+          <div style="background:#050811;padding:1rem;border-radius:8px;font-family:monospace;margin-bottom:1rem;border:1px solid rgba(255,255,255,0.06);line-height:1.6;">
             Total Maximum Supply: 100,000,000.0 QTH (Strict Hard Cap)<br>
             Genesis Allocation:   10,000,000.0 QTH (10.0% Allocation)<br>
-            Initial Block Reward: 2.0 QTH per block (Decays at cap)<br>
+            Validator Onboarding: $300 USDT Fee → 1,000.0 QTH Credited to Wallet<br>
+            Daily Validator Cap:  50.0 QTH / 24 Hours Max per Validator (Strict Ceiling)<br>
+            Base Block Reward:    0.05 QTH (Scaled proportionally by individual validator stake)<br>
+            Reference Valuation:  $15.00 USD / QTH Benchmark Target<br>
             Gas Base Fee Burn:    100% of EIP-1559 base fee permanently burned
           </div>
 

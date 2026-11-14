@@ -714,6 +714,65 @@ body {
   margin-bottom: 1.25rem;
 }
 
+/* Validator Economics Banner */
+.validator-econ-banner {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.econ-metric-item {
+  background: rgba(9, 13, 24, 0.8);
+  border: 1px solid rgba(0, 242, 254, 0.18);
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.econ-metric-item:hover {
+  transform: translateY(-2px);
+  border-color: rgba(0, 242, 254, 0.4);
+}
+
+.econ-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+
+.econ-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-mono);
+  margin-bottom: 0.25rem;
+}
+
+.econ-sub {
+  font-size: 0.72rem;
+  color: #94a3b8;
+}
+
+.accent-gold {
+  color: #f59e0b;
+}
+
+.accent-purple {
+  color: #a855f7;
+}
+
+.accent-green {
+  color: #10b981;
+}
+
+.accent-white {
+  color: #ffffff;
+}
+
 /* Footer */
 .footer {
   border-top: 1px solid var(--bg-card-border);

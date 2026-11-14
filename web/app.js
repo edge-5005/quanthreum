@@ -95,7 +95,18 @@ const callActionInput = document.getElementById("callActionInput");
 const callParamsInput = document.getElementById("callParamsInput");
 const btnCallContract = document.getElementById("btnCallContract");
 
-// Staking Elements
+// Staking & Dual-Key Onboarding Elements
+const onboardValidatorAddrInput = document.getElementById("onboardValidatorAddrInput");
+const onboardDepositorAddrInput = document.getElementById("onboardDepositorAddrInput");
+const onboardPaymentRefInput = document.getElementById("onboardPaymentRefInput");
+const onboardAutoStakeInput = document.getElementById("onboardAutoStakeInput");
+const btnOnboardValidator = document.getElementById("btnOnboardValidator");
+const btnDownloadValidatorBackup = document.getElementById("btnDownloadValidatorBackup");
+const onboardResultBox = document.getElementById("onboardResultBox");
+const onboardResValAddr = document.getElementById("onboardResValAddr");
+const onboardResDepAddr = document.getElementById("onboardResDepAddr");
+const onboardResStake = document.getElementById("onboardResStake");
+
 const stakeAmountInput = document.getElementById("stakeAmountInput");
 const btnSubmitStake = document.getElementById("btnSubmitStake");
 const sealValidatorAddrInput = document.getElementById("sealValidatorAddrInput");
@@ -457,6 +468,12 @@ function setWallet(address, seed, mnemonic = "") {
   walletAddressInput.value = address;
   walletSeedInput.value = seed;
   sealValidatorAddrInput.value = address;
+  if (onboardValidatorAddrInput && !onboardValidatorAddrInput.value) {
+    onboardValidatorAddrInput.value = address;
+  }
+  if (onboardDepositorAddrInput && !onboardDepositorAddrInput.value) {
+    onboardDepositorAddrInput.value = address;
+  }
 
   localStorage.setItem("qth_wallet_address", address);
   localStorage.setItem("qth_wallet_seed", seed);
@@ -602,6 +619,123 @@ async function callSmartContract() {
     btnCallContract.disabled = false;
     btnCallContract.innerText = "Execute Smart Contract Method";
   }
+}
+
+// ==========================================
+// Validator Onboarding & Dual-Key Security
+// ==========================================
+async function onboardValidator() {
+  const valAddr = (onboardValidatorAddrInput.value || walletAddressInput.value || "").trim();
+  const depAddr = (onboardDepositorAddrInput.value || valAddr).trim();
+  let payRef = (onboardPaymentRefInput.value || "").trim();
+  const autoStake = parseFloat(onboardAutoStakeInput.value) || 100.0;
+
+  if (!valAddr || !valAddr.startsWith("0xQTH_")) {
+    return showToast("Valid Quanthreum validator address (0xQTH_...) required", "error");
+  }
+
+  if (!payRef) {
+    payRef = `USDT-VERIFIED-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+    onboardPaymentRefInput.value = payRef;
+  }
+
+  btnOnboardValidator.disabled = true;
+  btnOnboardValidator.innerText = "Verifying $300 Fee & Crediting 1,000 QTH...";
+
+  try {
+    const res = await fetch(`${API_BASE}/api/validator/onboard`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        validator_address: valAddr,
+        depositor_address: depAddr,
+        payment_ref: payRef,
+        payment_usd: 300.0,
+        auto_stake: autoStake
+      })
+    });
+    const data = await res.json();
+
+    if (res.ok && data.status === "success") {
+      showToast("Validator Onboarded! 1,000 QTH Credited & 50 QTH/day Cap Active.", "success");
+      
+      if (onboardResultBox) {
+        onboardResultBox.style.display = "block";
+        onboardResValAddr.innerText = valAddr;
+        onboardResDepAddr.innerText = depAddr;
+        onboardResStake.innerText = autoStake.toFixed(2);
+      }
+
+      if (sealValidatorAddrInput) {
+        sealValidatorAddrInput.value = valAddr;
+      }
+
+      fetchNodeInfo();
+      fetchAccountState(depAddr);
+      if (valAddr !== depAddr) fetchAccountState(valAddr);
+    } else {
+      showToast(data.error || "Onboarding failed", "error");
+    }
+  } catch (err) {
+    showToast("Network error: " + err.message, "error");
+  } finally {
+    btnOnboardValidator.disabled = false;
+    btnOnboardValidator.innerText = "⚡ Activate Validator License ($300 → 1,000 QTH)";
+  }
+}
+
+function downloadValidatorBackup() {
+  const valAddr = (onboardValidatorAddrInput.value || walletAddressInput.value || "").trim();
+  const depAddr = (onboardDepositorAddrInput.value || valAddr).trim();
+  const payRef = (onboardPaymentRefInput.value || "USDT-GENESIS-FEE").trim();
+  const autoStake = parseFloat(onboardAutoStakeInput.value) || 100.0;
+
+  if (!valAddr) {
+    return showToast("Please enter a Validator Node address first", "error");
+  }
+
+  const backupData = {
+    network: "Quanthreum Mainnet (QTH)",
+    version: "1.0.0",
+    export_timestamp: new Date().toISOString(),
+    security_architecture: "Dual-Key Cold/Hot Isolation",
+    keys: {
+      validator_node_address: valAddr,
+      depositor_cold_address: depAddr,
+      key_role_isolation: "Validator Node signs block proposals; Depositor retains fund custody and receives yields."
+    },
+    economics: {
+      registration_fee_usd: 300.0,
+      payment_reference: payRef,
+      onboarding_credit_qth: 1000.0,
+      initial_stake_qth: autoStake,
+      daily_reward_cap_qth: 50.0,
+      emission_type: "Stake-Proportional Yield (Max 50 QTH/24h)",
+      reference_market_target_usd: 15.0
+    },
+    node_daemon_config: {
+      rpc_endpoint: window.location.origin,
+      chain_id: 1337,
+      target_block_time_seconds: 2,
+      base_fee_burn_ratio: 1.0,
+      p2p_port: 8545
+    },
+    cold_storage_recommendation: "Save this backup file directly to an encrypted USB drive, removable physical media, or printed cold vault in a safe. Never store raw private keys on public servers."
+  };
+
+  const jsonStr = JSON.stringify(backupData, null, 2);
+  const blob = new Blob([jsonStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const filename = `quanthreum_validator_backup_${valAddr.substring(0, 12)}_${Date.now()}.json`;
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast(`Backup downloaded: ${filename}. Please save to removable drive or safe!`, "success");
 }
 
 // Stake Q-PoS
@@ -898,6 +1032,12 @@ function setupEventListeners() {
   btnCallContract.addEventListener("click", callSmartContract);
 
   // Staking & Mining
+  if (btnOnboardValidator) {
+    btnOnboardValidator.addEventListener("click", onboardValidator);
+  }
+  if (btnDownloadValidatorBackup) {
+    btnDownloadValidatorBackup.addEventListener("click", downloadValidatorBackup);
+  }
   btnSubmitStake.addEventListener("click", submitValidatorStake);
   btnSealBlock.addEventListener("click", sealBlockNow);
   document.getElementById("btnRefreshBlocks").addEventListener("click", () => {

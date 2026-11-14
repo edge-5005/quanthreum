@@ -10,7 +10,14 @@ if BASE_DIR not in sys.path:
     sys.path.insert(0, BASE_DIR)
 
 from quanthreum.blockchain import Blockchain
-from quanthreum.consensus import TOTAL_MAX_SUPPLY
+from quanthreum.consensus import (
+    TOTAL_MAX_SUPPLY,
+    MAX_DAILY_VALIDATOR_REWARD,
+    VALIDATOR_REGISTRATION_FEE_USD,
+    VALIDATOR_ONBOARDING_CREDIT_QTH,
+    MIN_VALIDATOR_STAKE,
+    REFERENCE_TOKEN_PRICE_USD,
+)
 from quanthreum.quantum_crypto import QuantumKeyPair
 from quanthreum.transaction import Transaction
 from quanthreum.wallet import QuantumWallet
@@ -126,7 +133,12 @@ class handler(BaseHTTPRequestHandler):
                 "total_blocks": len(blockchain.chain),
                 "total_validators": len(blockchain.consensus.validators),
                 "total_staked": blockchain.consensus.total_staked,
-                "target_block_time_seconds": 6,
+                "target_block_time_seconds": 2,
+                "max_daily_validator_reward": MAX_DAILY_VALIDATOR_REWARD,
+                "validator_registration_fee_usd": VALIDATOR_REGISTRATION_FEE_USD,
+                "validator_onboarding_credit_qth": VALIDATOR_ONBOARDING_CREDIT_QTH,
+                "min_validator_stake": MIN_VALIDATOR_STAKE,
+                "reference_token_price_usd": REFERENCE_TOKEN_PRICE_USD,
             }
             self._send_json(200, info)
 
@@ -348,6 +360,40 @@ class handler(BaseHTTPRequestHandler):
                     })
                 else:
                     self._send_json(400, {"status": "rejected", "error": msg})
+            except Exception as e:
+                self._send_json(500, {"error": str(e)})
+
+        # 6b. Validator Onboarding ($300 Registration Fee -> 1,000 QTH Grant + Dual-Key Security)
+        elif path == "/api/validator/onboard":
+            try:
+                validator_address = data.get("validator_address", "").strip()
+                depositor_address = data.get("depositor_address", "").strip() or None
+                payment_ref = data.get("payment_ref", "").strip()
+                payment_usd = float(data.get("payment_usd", VALIDATOR_REGISTRATION_FEE_USD))
+                auto_stake = float(data.get("auto_stake", 100.0))
+
+                if not validator_address:
+                    self._send_json(400, {"error": "Missing 'validator_address' parameter"})
+                    return
+
+                ok, msg, details = blockchain.onboard_validator_with_payment(
+                    validator_address=validator_address,
+                    depositor_address=depositor_address,
+                    payment_ref=payment_ref,
+                    payment_usd=payment_usd,
+                    auto_stake=auto_stake,
+                )
+                if ok:
+                    self._send_json(200, {
+                        "status": "success",
+                        "message": msg,
+                        "details": details,
+                    })
+                else:
+                    self._send_json(400, {
+                        "status": "rejected",
+                        "error": msg,
+                    })
             except Exception as e:
                 self._send_json(500, {"error": str(e)})
 

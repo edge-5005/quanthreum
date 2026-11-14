@@ -15,7 +15,7 @@ import time
 from typing import Any, Dict, List, Optional, Tuple
 
 from .block import Block, BlockHeader, calculate_merkle_root
-from .consensus import INITIAL_BASE_FEE, QPoSConsensus, TOTAL_MAX_SUPPLY
+from .consensus import INITIAL_BASE_FEE, MIN_VALIDATOR_STAKE, QPoSConsensus, TOTAL_MAX_SUPPLY
 from .state import WorldState
 from .transaction import Transaction, derive_contract_address
 from .vm import QVM, VMExecutionResult
@@ -53,6 +53,8 @@ class Blockchain:
                     self.consensus.validators = state_data.get("validators", {})
                     self.consensus.total_staked = sum(self.consensus.validators.values())
                     self.consensus.total_burned_fees = state_data.get("burned_fees", 0.0)
+                    self.consensus.validator_daily_earnings = state_data.get("daily_earnings", {})
+                    self.consensus.validator_depositors = state_data.get("validator_depositors", {})
                     self.current_base_fee = state_data.get("base_fee", INITIAL_BASE_FEE)
 
                 print(f"Loaded Quanthreum chain with {len(self.chain)} blocks.")
@@ -84,6 +86,8 @@ class Blockchain:
             "validators": self.consensus.validators,
             "burned_fees": self.consensus.total_burned_fees,
             "base_fee": self.current_base_fee,
+            "daily_earnings": self.consensus.validator_daily_earnings,
+            "validator_depositors": self.consensus.validator_depositors,
         }
         with open(self.state_file, "w", encoding="utf-8") as f:
             json.dump(state_data, f, indent=2)
@@ -201,13 +205,18 @@ class Blockchain:
             executed_txs.append(tx)
             self.mempool.pop(tx.tx_hash, None)
 
-        # Validator Reward calculation (strictly enforces 100M supply cap)
+        # Validator Reward calculation (strictly enforces 100M supply cap and 50 QTH daily limit)
+        now_ts = time.time()
         circulating = self.get_circulating_supply()
-        mint_reward = self.consensus.calculate_block_reward(circulating)
+        mint_reward = self.consensus.calculate_block_reward(
+            circulating, validator_address=validator_address, block_timestamp=now_ts
+        )
+        self.consensus.record_validator_reward(validator_address, mint_reward, block_timestamp=now_ts)
 
-        # Credit validator: mint_reward + gas tips
+        # Credit validator or cold depositor: mint_reward + gas tips
         total_validator_payout = round(mint_reward + total_tips_to_validator, 8)
-        self.state.add_balance(validator_address, total_validator_payout)
+        payout_recipient = self.consensus.validator_depositors.get(validator_address, validator_address)
+        self.state.add_balance(payout_recipient, total_validator_payout)
 
         # Track burned fees (deflationary EIP-1559)
         self.consensus.total_burned_fees = round(self.consensus.total_burned_fees + total_burned_in_block, 8)
@@ -240,3 +249,62 @@ class Blockchain:
 
         self.save()
         return True, new_block, f"Block #{next_number} produced successfully"
+
+    def mine_pending_transactions(
+        self,
+        validator_address: str,
+        extra_data: str = "Quanthreum QTH Block"
+    ) -> Optional[Block]:
+        """Convenience alias for propose_and_mine_block used by REST API."""
+        ok, block, _ = self.propose_and_mine_block(validator_address=validator_address, extra_data=extra_data)
+        return block if ok else None
+
+    def onboard_validator_with_payment(
+        self,
+        validator_address: str,
+        depositor_address: Optional[str] = None,
+        payment_ref: str = "",
+        payment_usd: float = 300.0,
+        auto_stake: float = 100.0,
+    ) -> Tuple[bool, str, Dict[str, Any]]:
+        """
+        Processes confirmed receipt of the $300 validator registration fee.
+        Credits 1,000 QTH to the validator/depositor account and registers their initial stake.
+        Supports dual-key security (cold depositor address vs hot operator node address).
+        """
+        ok, msg, credit_qth = self.consensus.verify_and_onboard_validator(
+            validator_address=validator_address,
+            depositor_address=depositor_address,
+            payment_ref=payment_ref,
+            payment_amount_usd=payment_usd,
+        )
+        if not ok:
+            return False, msg, {}
+
+        recipient = depositor_address or validator_address
+
+        # Credit the 1,000 QTH onboarding allocation
+        self.state.add_balance(recipient, credit_qth)
+
+        # Allocate initial stake bond if requested
+        stake_amount = min(auto_stake, credit_qth)
+        if stake_amount >= MIN_VALIDATOR_STAKE and self.state.get_balance(recipient) >= stake_amount:
+            self.state.sub_balance(recipient, stake_amount)
+            self.consensus.register_validator(validator_address, stake_amount)
+
+        self.save()
+        details = {
+            "validator_address": validator_address,
+            "depositor_address": recipient,
+            "payment_ref": payment_ref,
+            "payment_usd": payment_usd,
+            "credited_qth": credit_qth,
+            "staked_qth": stake_amount,
+            "liquid_balance_qth": self.state.get_balance(recipient),
+            "daily_reward_cap_qth": 50.0,
+        }
+        return (
+            True,
+            f"Successfully onboarded validator {validator_address}. Credited {credit_qth} QTH (Staked: {stake_amount} QTH).",
+            details,
+        )

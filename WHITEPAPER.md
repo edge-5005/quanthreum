@@ -85,28 +85,36 @@ Quanthreum replaces energy-intensive mining with a quantum-hardened Proof-of-Sta
    * Transactions Root (`tx_root`)
    * Proposer QTH Address & W-OTS+ Signature
    * EIP-1559 Dynamic Base Fee & Gas Limit
-4. **Target Cadence:** Optimized for 6-second block times with sub-second finality.
+4. **Target Cadence:** Optimized for 2-second block times with sub-second finality.
+5. **Dual-Key Security Architecture:**
+   * **Cold Depositor Key:** Stored offline in hardware/removable encrypted media or a physical safe. Retains fund custody and receives block rewards.
+   * **Hot Operator Node Key:** Active on server/daemon executing block proposals and signing headers. A compromised node cannot drain staked principal.
 
 ---
 
 ## 6. Tokenomics & Deflationary Economic Model
 
-Quanthreum enforces a strict, mathematical tokenomic model designed for long-term store of value.
+Quanthreum enforces a strict, mathematical tokenomic model designed for long-term store of value, controlled validator yield, and anti-inflationary sustainability.
 
 ```
 Total Max Supply: 100,000,000.0 QTH (Strict Hard Cap)
 Genesis Liquidity: 10,000,000.0 QTH (10.0% Allocation)
 Remaining Mintable: 90,000,000.0 QTH (Distributed via Q-PoS Block Rewards)
+Reference Valuation Target: $15.00 USD / QTH
 ```
 
 | Parameter | Specification | Purpose |
 | :--- | :--- | :--- |
 | **Ticker** | **QTH** | Native settlement asset |
 | **Max Cap** | **100,000,000 QTH** | Strictly immutable in consensus rules |
-| **Initial Block Reward** | **2.0 QTH** | Sustainable validator incentivization |
-| **Halving / Decay** | Dynamic boundary clamp | Prevents minting beyond 100,000,000 QTH |
-| **Base Gas Fee** | Dynamic EIP-1559 (starts at 0.00001 QTH) | Adjusted by block fullness |
-| **Fee Burning** | **100% of Base Fee is Burned** | Introduces net-deflationary pressure under volume |
+| **Validator Registration Fee** | **$300 USD / USDT** | One-time network license fee to activate validator status |
+| **Validator Onboarding Grant** | **1,000 QTH** | Credited to registering wallet upon confirmed fee receipt |
+| **Daily Validator Reward Cap** | **50.0 QTH / 24h** | Hard ceiling on daily earnings per validator (prevents hyperinflation) |
+| **Reward Distribution** | **Stake-Proportional** | Yield and proposal frequency scale with staked QTH balance |
+| **Base Block Reward** | **0.05 QTH** | Sustainable baseline emission per 2-second block |
+| **Minimum Required Stake** | **10.0 QTH** | Collateral bond required to participate in consensus |
+| **Base Gas Fee** | Dynamic EIP-1559 (starts at 0.00001 QTH) | Adjusted dynamically by block gas fullness |
+| **Fee Burning** | **100% of Base Fee is Burned** | Introduces permanent deflationary burn under transaction load |
 
 ---
 
