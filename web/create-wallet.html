@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create QTH Wallet | Quanthreum Post-Quantum Security</title>
+  <link rel="icon" type="image/svg+xml" href="/logo.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    .wallet-page-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.12) 0%, rgba(7, 11, 20, 1) 70%);
+    }
+    .wallet-page-main {
+      flex: 1;
+      max-width: 900px;
+      margin: 2.5rem auto 4rem;
+      padding: 0 1.5rem;
+      width: 100%;
+    }
+    .page-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      transition: var(--transition);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--bg-card-border);
+    }
+    .page-back-link:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateX(-2px);
+    }
+    .wallet-hero-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .wallet-hero-header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-top: 0.5rem;
+      color: #fff;
+    }
+    .wallet-hero-header p {
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0.5rem auto 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .cold-storage-advice {
+      margin-top: 2rem;
+      background: rgba(13, 20, 36, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+    .cold-storage-advice h4 {
+      color: #f8fafc;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+<body class="wallet-page-wrapper">
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="brand">
+        <a href="/" class="brand-link" style="display:flex;align-items:center;gap:0.75rem;text-decoration:none;">
+          <div class="brand-logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none">
+              <defs>
+                <linearGradient id="qth-cw-p" x1="18" y1="20" x2="52" y2="54" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
+                </linearGradient>
+                <linearGradient id="qth-cw-s" x1="50" y1="18" x2="82" y2="52" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#0f172a"/>
+                </linearGradient>
+                <linearGradient id="qth-cw-b" x1="22" y1="52" x2="50" y2="84" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#0284c7"/>
+                  <stop offset="100%" stop-color="#082f49"/>
+                </linearGradient>
+                <linearGradient id="qth-cw-q" x1="12" y1="12" x2="88" y2="88" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#00f5ff"/>
+                  <stop offset="50%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#38bdf8"/>
+                </linearGradient>
+              </defs>
+              <path d="M 50 8 A 42 42 0 1 0 78 78 L 93 93 M 78 78 A 42 42 0 0 0 50 8" stroke="url(#qth-cw-q)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="50" cy="8" r="3.5" fill="#00f5ff"/>
+              <circle cx="93" cy="93" r="4" fill="#00f5ff"/>
+              <polygon points="50,18 24,50 50,44" fill="url(#qth-cw-p)"/>
+              <polygon points="50,18 50,44 76,50" fill="url(#qth-cw-s)"/>
+              <line x1="50" y1="18" x2="50" y2="44" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.9"/>
+              <polygon points="50,48 24,54 50,80" fill="url(#qth-cw-b)"/>
+              <polygon points="50,48 50,80 76,54" fill="#0f172a"/>
+              <circle cx="50" cy="46" r="2.2" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">Quanthreum</span>
+            <span class="ticker-badge">QTH</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="nav-actions">
+        <a href="/" class="btn btn-sm btn-outline">← Back to Explorer & Portal</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wallet-page-main">
+    <a href="/" class="page-back-link">
+      <span>←</span> Back to Main Explorer & Portal
+    </a>
+
+    <div class="wallet-hero-header">
+      <span class="badge-tag">Post-Quantum Key Derivation</span>
+      <h1>Create Quanthreum (QTH) Wallet</h1>
+      <p>
+        Generate a 512-bit quantum-immune seed phrase protected by Winternitz W-OTS+ cryptography and local AES vault encryption. Completely immune to Shor's algorithm factorization.
+      </p>
+    </div>
+
+    <div class="create-wallet-card" style="box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08);">
+      <!-- Mode Switcher -->
+      <div class="wizard-tabs">
+        <button class="wizard-tab-btn active" id="tabCreateNew">
+          <span class="tab-icon">✨</span> Generate New QTH Wallet
+        </button>
+        <button class="wizard-tab-btn" id="tabRestore">
+          <span class="tab-icon">🔄</span> Restore QTH Wallet
+        </button>
+      </div>
+
+      <!-- GENERATE NEW QTH WALLET FLOW -->
+      <div id="flowCreateNew" class="wizard-flow">
+
+        <!-- STEP 1: PASSWORD CREATION -->
+        <div id="stepPasswordCreation" class="wizard-step-container">
+          <div class="step-indicator-bar">
+            <span class="step-number active">Step 1</span>
+            <span class="step-title">Create Wallet Password</span>
+          </div>
+
+          <div class="wizard-step-banner">
+            <div class="step-badge">Password Security</div>
+            <p>Set a strong password to encrypt your QTH Wallet on this device. You will need this password to unlock your wallet, authorize transfers, and reveal your 48-word recovery phrase.</p>
+          </div>
+
+          <div class="password-form-grid">
+            <div class="field-group">
+              <label>New Password (min 8 characters)</label>
+              <div class="input-with-toggle">
+                <input type="password" id="inputNewPassword" placeholder="Create strong wallet password...">
+                <button type="button" class="btn-toggle-view" id="btnToggleNewPass" title="Toggle Visibility">👁</button>
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>Confirm Password</label>
+              <div class="input-with-toggle">
+                <input type="password" id="inputConfirmPassword" placeholder="Confirm password...">
+                <button type="button" class="btn-toggle-view" id="btnToggleConfirmPass" title="Toggle Visibility">👁</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="password-strength-info">
+            <ul class="strength-rules">
+              <li id="ruleLength"><span>•</span> Minimum 8 characters</li>
+              <li id="ruleMatch"><span>•</span> Passwords must match</li>
+            </ul>
+          </div>
+
+          <div id="passwordErrorMsg" class="error-msg-box" style="display: none;"></div>
+
+          <button class="btn btn-primary btn-large btn-full" id="btnSetPasswordProceed" type="button">
+            Set Password & Generate 48-Word Seed Phrase →
+          </button>
+        </div>
+
+        <!-- STEP 2: REVEAL & BACKUP 48-WORD PHRASE -->
+        <div id="stepRevealPhrase" class="wizard-step-container" style="display: none;">
+          <div class="step-indicator-bar">
+            <span class="step-number">Step 1 ✓</span>
+            <span class="step-number active">Step 2</span>
+            <span class="step-title">Backup 48-Word Post-Quantum Phrase</span>
+          </div>
+
+          <div class="shield-notice-box" id="revealShieldBox">
+            <div class="shield-icon">🛡️</div>
+            <h3>512-Bit Quantum Master Phrase Generated</h3>
+            <p>Ensure nobody is looking at your screen. These 48 words form your master cryptographic key and are required to recover your funds.</p>
+            <button class="btn btn-primary" id="btnRevealWordsAction" type="button">
+              👁️ Click to Reveal 48 Words
+            </button>
+          </div>
+
+          <div id="revealedContentBox" style="display: none;">
+            <div class="words-grid-header">
+              <div>
+                <strong>Your 48-Word Quantum Mnemonic Phrase</strong>
+                <span class="badge-entropy">512-Bit Entropy</span>
+              </div>
+              <div class="grid-tools">
+                <button class="btn btn-sm btn-outline" id="btnToggleBlur" type="button">👁️ Privacy Blur</button>
+                <button class="btn btn-sm btn-outline" id="btnCopy48Words" type="button">📋 Copy 48 Words</button>
+                <button class="btn btn-sm btn-outline" id="btnDownloadBackup" type="button">💾 Save Keystore JSON</button>
+                <button class="btn btn-sm btn-outline" id="btnCreateAnotherNew" type="button">✨ Generate Another</button>
+              </div>
+            </div>
+
+            <div class="mnemonic-grid" id="mnemonicGrid">
+              <!-- 48 word pills populated dynamically -->
+            </div>
+
+            <!-- Checksum & Security Assurance -->
+            <div class="pqc-assurance-bar">
+              <div class="assurance-item">
+                <span class="assure-dot"></span> <strong>512-Bit Quantum Entropy</strong>
+              </div>
+              <div class="assurance-item">
+                <span class="assure-dot"></span> <strong>16-Bit Checksum Verified</strong>
+              </div>
+              <div class="assurance-item">
+                <span class="assure-dot"></span> <strong>Password Encrypted</strong>
+              </div>
+              <div class="assurance-item">
+                <span class="assure-dot"></span> <strong>Shor-Immune W-OTS+</strong>
+              </div>
+            </div>
+
+            <!-- Confirmation Checkbox & Activation -->
+            <div class="confirm-backup-box">
+              <label class="checkbox-container">
+                <input type="checkbox" id="chkSavedWords">
+                <span class="checkmark"></span>
+                <span class="confirm-text">I have saved and stored all 48 seed words and my password safely offline (removable drive or physical safe). I understand that lost phrases cannot be recovered.</span>
+              </label>
+              <button class="btn btn-primary btn-large btn-full" id="btnActivateWallet" disabled>
+                Activate & Open My QTH Wallet
+              </button>
+            </div>
+
+            <!-- Newly Created Wallet Details -->
+            <div id="createdWalletSummary" class="created-summary-card" style="display: none;">
+              <div class="summary-header">
+                <span class="summary-check">✓</span>
+                <h4>QTH Wallet Successfully Activated</h4>
+              </div>
+              <div class="summary-fields">
+                <div><strong>Your Quanthreum Address:</strong> <span class="font-mono accent-cyan" id="newWalletAddr"></span></div>
+                <div><strong>Post-Quantum Public Key:</strong> <span class="font-mono truncated" id="newWalletPub"></span></div>
+              </div>
+              <div class="summary-actions" style="margin-top: 1rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+                <a href="/#wallet" class="btn btn-primary" style="flex: 1; text-align: center;">
+                  Open Active Wallet Dashboard →
+                </a>
+                <a href="/#staking" class="btn btn-secondary" style="flex: 1; text-align: center;">
+                  Go to Validator Staking ($300 → 1,000 QTH) →
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RESTORE EXISTING QTH WALLET FLOW -->
+      <div id="flowRestore" class="wizard-flow" style="display: none;">
+        <div class="wizard-step-banner">
+          <div class="step-badge">Restore QTH Wallet</div>
+          <p>Paste your 48-word mnemonic phrase below and set a new password to encrypt and restore your QTH Wallet.</p>
+        </div>
+
+        <div class="field-group">
+          <label>Enter 48-Word Seed Phrase</label>
+          <textarea id="restoreInput" rows="5" placeholder="Enter all 48 words separated by spaces..." class="code-area font-mono"></textarea>
+          <div class="word-counter-row">
+            <span id="restoreWordCounter" class="word-counter">0 / 48 words</span>
+            <span id="restoreValidationStatus" class="validation-status"></span>
+          </div>
+        </div>
+
+        <div class="password-form-grid">
+          <div class="field-group">
+            <label>New Wallet Password (min 8 characters)</label>
+            <input type="password" id="restorePassword" placeholder="Create wallet password...">
+          </div>
+          <div class="field-group">
+            <label>Confirm Password</label>
+            <input type="password" id="restoreConfirmPassword" placeholder="Confirm password...">
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-large btn-full" id="btnRestoreSubmit">
+          Verify & Restore QTH Wallet
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Cold Storage Best Practices Advice -->
+    <div class="cold-storage-advice">
+      <h4>🔒 Cold Storage & Security Recommendations</h4>
+      <p>
+        • <strong>Offline Removable Drive:</strong> Always save your JSON keystore backup file to an encrypted USB stick or offline air-gapped storage device.<br>
+        • <strong>Physical Paper Safe:</strong> Hand-write the 48 seed words in sequential order and store them in a fireproof physical safe.<br>
+        • <strong>Never Disclose Online:</strong> Quanthreum network operators will never ask for your seed words or encryption password.
+      </p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-left">
+        <span class="brand-title">Quanthreum <span class="accent-cyan">QTH</span></span>
+        <p class="footer-desc">Post-Quantum Ethereum Nature Blockchain • Max Supply: 100,000,000 QTH.</p>
+      </div>
+      <div class="footer-right">
+        <a href="/" style="color:var(--text-muted);text-decoration:none;">Back to Explorer</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/create-wallet.js"></script>
+</body>
+</html>

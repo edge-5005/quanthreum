@@ -922,39 +922,49 @@ async function simulateEnterpriseCoSign() {
 // ==========================================
 function setupEventListeners() {
   // Wizard Mode Switcher
-  tabCreateNew.addEventListener("click", () => {
-    tabCreateNew.classList.add("active");
-    tabRestore.classList.remove("active");
-    flowCreateNew.style.display = "block";
-    flowRestore.style.display = "none";
-  });
+  if (tabCreateNew) {
+    tabCreateNew.addEventListener("click", () => {
+      tabCreateNew.classList.add("active");
+      if (tabRestore) tabRestore.classList.remove("active");
+      if (flowCreateNew) flowCreateNew.style.display = "block";
+      if (flowRestore) flowRestore.style.display = "none";
+    });
+  }
 
-  tabRestore.addEventListener("click", () => {
-    tabRestore.classList.add("active");
-    tabCreateNew.classList.remove("active");
-    flowRestore.style.display = "block";
-    flowCreateNew.style.display = "none";
-  });
+  if (tabRestore) {
+    tabRestore.addEventListener("click", () => {
+      tabRestore.classList.add("active");
+      if (tabCreateNew) tabCreateNew.classList.remove("active");
+      if (flowRestore) flowRestore.style.display = "block";
+      if (flowCreateNew) flowCreateNew.style.display = "none";
+    });
+  }
 
   // Password Flow
-  btnSetPasswordProceed.addEventListener("click", handlePasswordProceed);
-  btnToggleNewPass.addEventListener("click", () => {
-    inputNewPassword.type = inputNewPassword.type === "password" ? "text" : "password";
-  });
-  btnToggleConfirmPass.addEventListener("click", () => {
-    inputConfirmPassword.type = inputConfirmPassword.type === "password" ? "text" : "password";
-  });
+  if (btnSetPasswordProceed) btnSetPasswordProceed.addEventListener("click", handlePasswordProceed);
+  if (btnToggleNewPass && inputNewPassword) {
+    btnToggleNewPass.addEventListener("click", () => {
+      inputNewPassword.type = inputNewPassword.type === "password" ? "text" : "password";
+    });
+  }
+  if (btnToggleConfirmPass && inputConfirmPassword) {
+    btnToggleConfirmPass.addEventListener("click", () => {
+      inputConfirmPassword.type = inputConfirmPassword.type === "password" ? "text" : "password";
+    });
+  }
 
   // Reveal Button
-  btnRevealWordsAction.addEventListener("click", handleRevealWords);
+  if (btnRevealWordsAction) btnRevealWordsAction.addEventListener("click", handleRevealWords);
 
   // 48-word Grid Tools
-  btnToggleBlur.addEventListener("click", () => {
-    mnemonicGrid.classList.toggle("blurred");
-  });
+  if (btnToggleBlur && mnemonicGrid) {
+    btnToggleBlur.addEventListener("click", () => {
+      mnemonicGrid.classList.toggle("blurred");
+    });
+  }
 
-  btnCopy48Words.addEventListener("click", copyAll48Words);
-  btnDownloadBackup.addEventListener("click", downloadPaperBackup);
+  if (btnCopy48Words) btnCopy48Words.addEventListener("click", copyAll48Words);
+  if (btnDownloadBackup) btnDownloadBackup.addEventListener("click", downloadPaperBackup);
 
   const btnCopyRevealed = document.getElementById("btnCopyRevealedAddress");
   if (btnCopyRevealed) {
@@ -971,26 +981,30 @@ function setupEventListeners() {
     btnCreateAnother.addEventListener("click", resetCreateWalletWizard);
   }
 
-  chkSavedWords.addEventListener("change", (e) => {
-    btnActivateWallet.disabled = !e.target.checked;
-  });
+  if (chkSavedWords && btnActivateWallet) {
+    chkSavedWords.addEventListener("change", (e) => {
+      btnActivateWallet.disabled = !e.target.checked;
+    });
+  }
 
-  btnActivateWallet.addEventListener("click", activateQTHWallet);
+  if (btnActivateWallet) btnActivateWallet.addEventListener("click", activateQTHWallet);
 
   // Restore Input word counter
-  restoreInput.addEventListener("input", (e) => {
-    const text = e.target.value.trim();
-    const count = text ? text.split(/\s+/).length : 0;
-    restoreWordCounter.innerText = `${count} / 48 words`;
-    if (count === 48) {
-      restoreValidationStatus.innerText = "✓ 48 words entered";
-      restoreValidationStatus.className = "validation-status valid";
-    } else {
-      restoreValidationStatus.innerText = "";
-    }
-  });
+  if (restoreInput && restoreWordCounter && restoreValidationStatus) {
+    restoreInput.addEventListener("input", (e) => {
+      const text = e.target.value.trim();
+      const count = text ? text.split(/\s+/).length : 0;
+      restoreWordCounter.innerText = `${count} / 48 words`;
+      if (count === 48) {
+        restoreValidationStatus.innerText = "✓ 48 words entered";
+        restoreValidationStatus.className = "validation-status valid";
+      } else {
+        restoreValidationStatus.innerText = "";
+      }
+    });
+  }
 
-  btnRestoreSubmit.addEventListener("click", restoreFrom48Words);
+  if (btnRestoreSubmit) btnRestoreSubmit.addEventListener("click", restoreFrom48Words);
 
   // Active Wallet Copy & Toggle
   btnCopyAddress.addEventListener("click", () => {

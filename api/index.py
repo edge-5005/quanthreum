@@ -104,6 +104,11 @@ class handler(BaseHTTPRequestHandler):
                 fp = os.path.join(wd, "index.html")
                 if os.path.exists(fp):
                     return self._serve_file(fp, "text/html; charset=utf-8")
+        elif path in ("/create-wallet", "/create-wallet.html", "/web/create-wallet.html"):
+            for wd in web_dirs:
+                fp = os.path.join(wd, "create-wallet.html")
+                if os.path.exists(fp):
+                    return self._serve_file(fp, "text/html; charset=utf-8")
         elif path in ("/styles.css", "/web/styles.css"):
             for wd in web_dirs:
                 fp = os.path.join(wd, "styles.css")
