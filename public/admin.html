@@ -314,6 +314,84 @@
 
     </div>
 
+    <!-- Customizable Payment & Wallet Configuration Card -->
+    <div class="card" style="margin-bottom: 2rem; border-color: rgba(79, 224, 182, 0.4); background: linear-gradient(135deg, rgba(79, 224, 182, 0.05) 0%, rgba(14, 20, 21, 0.95) 100%);">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(79, 224, 182, 0.15); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #4fe0b6;">
+            💰
+          </div>
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800; color: #fff; margin: 0;">Validator License Payment & Treasury Wallets</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin: 2px 0 0;">Customize and update your deposit wallet addresses for TRC-20, ERC-20, and BEP-20 payments anytime.</p>
+          </div>
+        </div>
+        <span style="background: rgba(79, 224, 182, 0.15); border: 1px solid rgba(79, 224, 182, 0.4); color: #4fe0b6; font-size: 0.75rem; font-weight: 700; padding: 4px 10px; border-radius: 9999px;">
+          ● Dynamic Sync Active
+        </span>
+      </div>
+
+      <form id="paymentConfigForm" onsubmit="return false;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; margin-bottom: 1.25rem;">
+          
+          <!-- TRC-20 USDT Wallet Address -->
+          <div>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: #4fe0b6; margin-bottom: 6px; letter-spacing: 0.03em;">
+              TRC-20 (Tron) USDT Deposit Address
+            </label>
+            <input type="text" id="cfgTrc20Input" class="font-mono" placeholder="Enter TRC-20 Tron address (e.g. T...)" style="width: 100%; padding: 10px 14px; background: #080d0d; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none;">
+            <small style="color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; display: block;">Primary network used on public onboarding with QR code.</small>
+          </div>
+
+          <!-- ERC-20 USDT Wallet Address -->
+          <div>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: #60a5fa; margin-bottom: 6px; letter-spacing: 0.03em;">
+              ERC-20 (Ethereum) USDT Deposit Address
+            </label>
+            <input type="text" id="cfgErc20Input" class="font-mono" placeholder="Enter ERC-20 Ethereum address (0x...)" style="width: 100%; padding: 10px 14px; background: #080d0d; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none;">
+            <small style="color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; display: block;">Ethereum mainnet USDT treasury address.</small>
+          </div>
+
+          <!-- BEP-20 USDT Wallet Address -->
+          <div>
+            <label style="display: block; font-size: 0.78rem; text-transform: uppercase; font-weight: 700; color: #fbbf24; margin-bottom: 6px; letter-spacing: 0.03em;">
+              BEP-20 (BNB Chain) USDT Deposit Address
+            </label>
+            <input type="text" id="cfgBep20Input" class="font-mono" placeholder="Enter BEP-20 BSC address (0x...)" style="width: 100%; padding: 10px 14px; background: #080d0d; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 8px; color: #fff; font-size: 0.88rem; outline: none;">
+            <small style="color: var(--text-dim); font-size: 0.75rem; margin-top: 4px; display: block;">Low-fee BNB Smart Chain USDT treasury address.</small>
+          </div>
+
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin-bottom: 1.5rem; background: rgba(8, 13, 13, 0.6); padding: 1rem; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.06);">
+          <div>
+            <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">License Fee Amount ($)</label>
+            <input type="number" id="cfgFeeAmountInput" value="300" min="10" step="10" style="width: 100%; padding: 8px 12px; background: #0e1415; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; color: #fff; font-weight: 700;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Onboarding QTH Grant</label>
+            <input type="number" id="cfgGrantAmountInput" value="1000" min="100" step="50" style="width: 100%; padding: 8px 12px; background: #0e1415; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; color: #4fe0b6; font-weight: 700;">
+          </div>
+          <div>
+            <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Daily Mint Reward Cap</label>
+            <input type="number" id="cfgDailyCapInput" value="50" min="1" step="5" style="width: 100%; padding: 8px 12px; background: #0e1415; border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 6px; color: #27e38c; font-weight: 700;">
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;">
+          <button type="button" id="btnSavePaymentConfig" class="btn btn-primary" style="padding: 10px 24px;">
+            💾 Save & Publish Wallet Addresses
+          </button>
+          <button type="button" id="btnResetPaymentConfig" class="btn btn-outline" style="padding: 10px 20px;">
+            ↺ Reset to Default Addresses
+          </button>
+          <a href="/staking" target="_blank" class="btn btn-secondary" style="text-decoration: none; padding: 10px 20px; margin-left: auto;">
+            👁️ Test on Public Staking Page →
+          </a>
+        </div>
+      </form>
+    </div>
+
     <!-- Audience Logins & Active Sessions Table -->
     <div class="card" style="margin-bottom: 2rem;">
       <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">

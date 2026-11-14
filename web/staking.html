@@ -59,7 +59,7 @@
       <div class="validator-econ-banner">
         <div class="econ-metric-item">
           <span class="econ-label">Validator License Fee</span>
-          <span class="econ-val accent-gold">$300 USDT</span>
+          <span class="econ-val accent-gold val-fee-display">$300 USDT</span>
           <span class="econ-sub">One-time registration fee</span>
         </div>
         <div class="econ-metric-item">
@@ -298,6 +298,38 @@
       ERC20: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B',
       BEP20: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B'
     };
+
+    function applyPaymentConfig() {
+      const saved = JSON.parse(localStorage.getItem('qth_payment_config') || 'null');
+      if (saved) {
+        if (saved.trc20Address) usdtAddresses.TRC20 = saved.trc20Address;
+        if (saved.erc20Address) usdtAddresses.ERC20 = saved.erc20Address;
+        if (saved.bep20Address) usdtAddresses.BEP20 = saved.bep20Address;
+
+        // Update active tab display
+        const activeBtn = document.querySelector('.usdt-net-btn.active');
+        const net = activeBtn ? activeBtn.getAttribute('data-net') : 'TRC20';
+        const addrEl = document.getElementById('usdtDepositAddress');
+        if (addrEl && usdtAddresses[net]) {
+          addrEl.textContent = usdtAddresses[net];
+        }
+
+        // Update fee displays
+        if (saved.feeAmount) {
+          document.querySelectorAll('.val-fee-display').forEach(el => {
+            el.textContent = `$${saved.feeAmount} USDT`;
+          });
+          const feeHead = document.querySelector('#usdtDepositAddress')?.parentElement?.previousElementSibling?.previousElementSibling;
+          if (feeHead && feeHead.querySelector('span')) {
+            feeHead.querySelector('span').textContent = `$${saved.feeAmount} USDT License Deposit`;
+          }
+        }
+      }
+    }
+
+    applyPaymentConfig();
+    window.addEventListener('storage', applyPaymentConfig);
+    window.addEventListener('qth_payment_config_updated', applyPaymentConfig);
 
     document.querySelectorAll('.usdt-net-btn').forEach(btn => {
       btn.addEventListener('click', () => {

