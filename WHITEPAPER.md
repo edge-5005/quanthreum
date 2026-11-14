@@ -1,16 +1,14 @@
 # Quanthreum (QTH) Whitepaper
 **A Post-Quantum EVM-Compatible Layer-1 Blockchain with Winternitz Cryptography & Deflationary Tokenomics**
 
-*Version 1.0 — November 2026*  
-*Repository:* [https://github.com/edge-5005/quanthreum](https://github.com/edge-5005/quanthreum)  
-*Live Web3 Portal:* [https://quanthreum.vercel.app](https://quanthreum.vercel.app)  
+*Technical Specification — Version 1.0*  
 
 ---
 
 ## 1. Abstract
 As fault-tolerant quantum computers approach commercial realization, the cryptographic foundations of existing distributed ledgers face an existential crisis. Standard public-key cryptosystems—including RSA, ECDSA (used in Bitcoin and Ethereum), and Ed25519 (used in Solana and Cardano)—are mathematically vulnerable to polynomial-time factorization and discrete logarithm extraction via Shor's algorithm. 
 
-**Quanthreum (QTH)** is an enterprise Layer-1 blockchain engineered to deliver absolute post-quantum security without sacrificing smart contract programmability or developer interoperability. Quanthreum replaces elliptic curve cryptography with **Winternitz One-Time Signatures Plus (W-OTS+)** over 67 iterative SHA3-256 hash chains, providing 512-bit master entropy and NIST-standardized post-quantum resistance. Coupled with an EVM-compatible execution engine (QVM), Quantum Proof-of-Stake (Q-PoS) consensus, an EIP-1559 deflationary burn mechanism, and a hard supply cap of 100,000,000 QTH, Quanthreum provides a permanent, scalable safe harbor for Web3 assets.
+**Quanthreum (QTH)** is an enterprise Layer-1 blockchain engineered to deliver absolute post-quantum security without sacrificing smart contract programmability or developer interoperability. Quanthreum replaces elliptic curve cryptography with **Winternitz One-Time Signatures Plus (W-OTS+)** over 67 iterative SHA3-256 hash chains, providing 512-bit master entropy and NIST-standardized post-quantum resistance. Coupled with an EVM-compatible execution engine (QVM), Quantum Proof-of-Stake (Q-PoS) consensus, an EIP-1559 deflationary burn mechanism, and a hard supply cap of 100,000,000 QTH, Quanthreum provides a permanent, scalable safe harbor for decentralized digital assets.
 
 ---
 
@@ -26,7 +24,7 @@ $$\mathcal{O}(\sqrt{n}) \approx 2^{128} \text{ operations}$$
 
 However, Peter Shor's quantum algorithm solves the discrete logarithm problem in bounded polynomial time:
 $$\mathcal{O}((\log N)^3)$$
-Executing Shor's algorithm on an elliptic curve requires approximately **2,048 to 4,096 logical qubits**. Estimates from IBM, Google Quantum AI, and academic labs indicate this threshold could be reached within the 2030s.
+Executing Shor's algorithm on an elliptic curve requires approximately **2,048 to 4,096 logical qubits**. Estimates from global quantum research institutions indicate this threshold could be reached within the 2030s.
 
 ### 2.2 The Public Key Exposure Attack Vector
 Many blockchains rely on address hashing (e.g., $Address = \text{Keccak-256}(Q)[12..31]$). While an unspent address only reveals a hash, **the moment an outgoing transaction is broadcast, the unhashed public point $Q$ is published in the global mempool**. A quantum adversary can intercept this broadcast, compute $d$ before the block is mined, forge a competing transaction with higher gas fees, and drain the wallet.
@@ -112,20 +110,18 @@ Remaining Mintable: 90,000,000.0 QTH (Distributed via Q-PoS Block Rewards)
 
 ---
 
-## 7. Commercial Security Services & Revenue Architecture
+## 7. Protocol Security Services
 
-Beyond native gas settlement, Quanthreum provides enterprise security products that generate recurring protocol and developer revenue:
+Beyond native gas settlement, Quanthreum provides modular security mechanisms that interface with external networks:
 
 ### 7.1 Quantum Vulnerability Scanner
-A public scanner integrated on [quanthreum.vercel.app](https://quanthreum.vercel.app#security-services) that checks public key exposure on Ethereum, Bitcoin, and Solana. Serves as a lead generation funnel for enterprise migration and institutional custody onboarding.
+An algorithmic auditor that evaluates public key exposure on legacy networks including Ethereum, Bitcoin, and Solana.
 
-### 7.2 B2B Quantum Co-Signing Gateway
-DeFi protocols, cross-chain bridges, and multi-billion-dollar crypto treasuries integrate the Quanthreum REST API (`/api/security/verify`) as a dual-signature co-signer. High-value transactions require a Quanthreum W-OTS+ cryptographic stamp before execution on external chains.
-* **Pricing Model:** Tiered API access ($199/mo to $2,500/mo) or per-transaction verification fee.
+### 7.2 Post-Quantum Co-Signing Gateway
+DeFi protocols, cross-chain bridges, and institutional vaults integrate the Quanthreum verification engine as a dual-signature co-signer. High-value transactions require a Quanthreum W-OTS+ cryptographic validation proof before execution.
 
 ### 7.3 On-Chain Quantum Multi-Sig Vaults
-Enterprise DAO treasuries deploy [`contracts/QuantumMultiSigVault.sol`](contracts/QuantumMultiSigVault.sol) onto the QVM. 
-* **Pricing Model:** An automated 0.25% protocol fee is routed to the contract creator upon every withdrawal.
+Decentralized autonomous organizations and treasuries deploy threshold-governed multi-sig contracts on the QVM, requiring $M$-of-$N$ quantum signatures to authorize asset disbursement.
 
 ---
 
@@ -139,22 +135,20 @@ Enterprise DAO treasuries deploy [`contracts/QuantumMultiSigVault.sol`](contract
 | **Master Entropy** | 128 / 256 bits | 128 / 256 bits | 256 bits | **512 bits (48 Words)** |
 | **Max Coin Supply** | 21,000,000 | Infinite (Burn dependent) | 105,000,000 | **100,000,000 QTH (Hard Cap)** |
 | **Fee Burning Model** | ❌ None | ✅ EIP-1559 | ❌ None | **✅ EIP-1559 Deflationary Burn** |
-| **External B2B Gateway** | ❌ None | ❌ None | ❌ None | **✅ Live Dual-Signature API** |
-| **Validator Tooling** | ASIC Hardware | Proof-of-Stake (32 ETH) | PoW / PoS Hybrid | **Windows 1-Click Studio & Q-PoS** |
+| **External Security Gateway** | ❌ None | ❌ None | ❌ None | **✅ Live Dual-Signature API** |
+| **Validator Tooling** | ASIC Hardware | Proof-of-Stake (32 ETH) | PoW / PoS Hybrid | **1-Click Studio & Q-PoS** |
 
 ---
 
 ## 9. Technical Roadmap
 
 * **Phase 1 (Completed):** Core ledger, 512-bit mnemonic derivation, Winternitz W-OTS+ signature engine, QVM execution environment, Q-PoS validator consensus, and EIP-1559 fee burning.
-* **Phase 2 (Completed):** Windows 1-Click Validator Studio, interactive Web3 portal deployment on Vercel, and public REST API.
-* **Phase 3 (Current):** B2B Quantum Co-Signing Gateway, Multi-Sig Treasury Vaults, live Address Vulnerability Scanner, and Developer SDK.
-* **Phase 4 (Next):** Free listing submissions (CoinSniper, CoinCodex), wrapped ERC-20 token bridge (`wQTH`), and Uniswap decentralized liquidity pool deployment.
+* **Phase 2 (Completed):** 1-Click Validator Studio, interactive Web3 portal deployment, and public REST API.
+* **Phase 3 (Current):** Quantum Co-Signing Gateway, Multi-Sig Treasury Vaults, live Address Vulnerability Scanner, and Developer SDK.
+* **Phase 4 (Next):** Free listing submissions (CoinSniper, CoinCodex), wrapped ERC-20 token bridge (`wQTH`), and decentralized liquidity pool deployment.
 * **Phase 5:** Formal NIST PQC validation audit and cross-chain zero-knowledge quantum state bridges.
 
 ---
 
 ## 10. Conclusion
 Quanthreum bridges the critical gap between upcoming quantum computational capabilities and real-world Web3 usability. By integrating Winternitz W-OTS+ hash-based signatures directly with EVM smart contracts, deflationary tokenomics, and enterprise dual-signature gateways, Quanthreum provides the premier mathematical shield for the next century of decentralized digital assets.
-
-*© 2026 Quanthreum Project. All rights reserved.*
